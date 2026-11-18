@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="iMateGo 行動發票點餐系統操作說明：電子發票、商品管理、結帳、設定、報表與後台。" name="description"/>
+<meta content="#fff8f3" name="theme-color"/>
+<title>
+   iMateGo｜行動發票點餐系統操作說明手冊
+  </title>
+<style id="imatego-theme">
+   /* iMateGo 操作手冊：純 CSS，無外部樣式或字型依賴。修改 :root 即可調整品牌色。 */
+:root {
+  --brand: #f15b38;
+  --brand-deep: #da4425;
+  --brand-soft: #fff0e9;
+  --brand-faint: #fff9f5;
+  --page-bg: #fff9f4;
+  --surface: #ffffff;
+  --ink: #242023;
+  --muted: #756b65;
+  --line: #f0d9cc;
+  --line-soft: #f5e8df;
+  --shadow: 0 7px 26px rgba(97, 53, 34, .035);
+  --header-h: 74px;
+  --sidebar-w: 250px;
+  color-scheme: light;
+  font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* 章節平滑展開及收合 */
+:root {
+    interpolate-size: allow-keywords;
+}
+
+details::details-content {
+    block-size: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+        block-size 0.4s ease,
+        opacity 0.3s ease,
+        content-visibility 0.4s allow-discrete;
+}
+
+details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 20px)}
+body{margin:0;background:var(--page-bg);color:var(--ink);font-size:15px;line-height:1.8}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ff9b7c;outline-offset:4px}
+a{text-decoration:none;color:inherit}
+svg.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.svg-sprite{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+[hidden]{display:none!important}
+.top-accent{height:4px;background:linear-gradient(90deg,#f35b3b,#fcaa72 65%,#ffe5c9)}
+.site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line-soft);backdrop-filter:blur(16px)}
+.header-inner{height:var(--header-h);max-width:1536px;margin:auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-mark{height:40px;width:40px;border-radius:13px;display:grid;place-items:center;background:var(--brand);color:white}
+.brand-mark .icon{height:23px;width:23px}
+.brand-main{font-size:23px;line-height:1;font-weight:860;letter-spacing:-.9px}
+.brand-main span{color:var(--brand)}
+.brand-caption{border-left:1px solid #e8d5c9;padding-left:14px;margin-left:3px;color:#7b706b;font-size:12px;font-weight:650;white-space:nowrap;letter-spacing:.06em}
+.header-actions{display:flex;align-items:center;gap:12px}
+.search-box{width:300px;max-width:32vw;display:flex;align-items:center;gap:9px;height:40px;border:1px solid #efddd1;border-radius:10px;background:#fffaf7;padding:0 12px;color:#8b7668;transition:border-color .2s,box-shadow .2s}
+.search-box:focus-within{border-color:#f5ab8f;box-shadow:0 0 0 3px rgba(241,91,56,.08)}
+.search-box .icon{width:17px;height:17px}
+.search-box input{min-width:0;width:100%;background:transparent;border:0;outline:0;color:var(--ink);font-size:13px}
+.search-box input::placeholder{color:#a59b95}
+.search-box kbd{border:1px solid #e9d9d0;border-radius:5px;padding:0 6px;color:#a69a92;font:13px monospace;background:white}
+.header-print{background:white;border:1px solid var(--line);border-radius:9px;padding:7px 13px;color:#65564d;font-size:12px;font-weight:700;white-space:nowrap}
+.header-print:hover,.control-button:hover{background:var(--brand-soft);border-color:#f2c9b6;color:var(--brand-deep)}
+.page-shell{max-width:1536px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);gap:34px;align-items:start}
+.sidebar{position:sticky;top:calc(var(--header-h) + 22px);margin-top:34px;background:#fff;border:1px solid var(--line-soft);border-radius:17px;padding:23px 14px 19px;max-height:calc(100vh - var(--header-h) - 44px);overflow-y:auto;box-shadow:var(--shadow)}
+.sidebar-top{padding:0 13px 16px;border-bottom:1px solid #f4e7df;margin-bottom:11px;display:flex;justify-content:space-between;align-items:center}
+.sidebar-kicker{font:700 10px/1.3 Arial,sans-serif;letter-spacing:2.5px;color:#de9074}
+.sidebar h2{font-size:17px;margin:5px 0 0;line-height:1.6}
+.sidebar-chapters{display:flex;flex-direction:column;gap:3px}
+.toc-link{min-height:40px;display:flex;align-items:center;gap:12px;padding:8px 13px;color:#615852;border-radius:10px;font-size:13px;font-weight:600;transition:background .15s,color .15s}
+.toc-link:hover{background:var(--brand-faint);color:var(--brand-deep)}
+.toc-link.is-active{color:var(--brand-deep);background:var(--brand-soft)}
+.toc-no{font:700 11px Arial,sans-serif;letter-spacing:.06em;color:#baa69b}
+.toc-link.is-active .toc-no{color:var(--brand)}
+.sidebar-foot{display:flex;gap:10px;margin:18px 12px 0;padding-top:16px;border-top:1px solid var(--line-soft);font-size:11px;color:#95847b;line-height:1.8}
+.sidebar-foot .icon{color:var(--brand);width:16px;height:16px;margin-top:2px}
+.main-content{min-width:0;padding:34px 0 74px}
+.hero{overflow:hidden;position:relative;border-radius:20px;background:linear-gradient(112deg,#fff 0%,#fff8f4 52%,#ffe9dc 100%);border:1px solid #f4dbcb;padding:39px 43px 37px;isolation:isolate;box-shadow:var(--shadow)}
+.hero::before,.hero::after{content:"";display:block;position:absolute;z-index:-1;border:1px solid rgba(240,123,85,.15);border-radius:50%;right:-90px;top:-145px;width:430px;height:430px}
+.hero::after{right:-8px;top:-65px;width:270px;height:270px;border-color:rgba(240,123,85,.23)}
+.hero-overline{display:flex;align-items:center;gap:10px;font:800 10px/1.5 Arial,sans-serif;color:#bf6a4e;letter-spacing:2.8px;margin-bottom:15px}
+.hero-pip{width:8px;height:8px;border-radius:50%;background:var(--brand)}
+.hero h1{font-size:clamp(27px,3.1vw,39px);letter-spacing:.03em;line-height:1.44;margin:0;color:#222}
+.hero h1 span{color:var(--brand)}
+.hero>p{font-size:14px;max-width:620px;color:#705d53;margin:19px 0 0}
+.hero-tags{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:24px}
+.hero-tags span{border:1px solid #f1d9cd;color:#a66e5b;background:rgba(255,255,255,.8);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:650}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 4px 16px}
+.toolbar-label{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800}
+.toolbar-label .icon{width:19px;color:var(--brand)}
+.toolbar-count{color:#ac9383;font-size:12px;font-weight:500;margin-left:7px;white-space:nowrap}
+.toolbar-buttons{display:flex;gap:7px;flex-wrap:wrap}
+.control-button{background:white;border:1px solid #ead7ca;border-radius:9px;color:#78685e;font-size:12px;padding:7px 13px;min-height:34px;font-weight:650;transition:all .15s}
+.chapters{display:flex;flex-direction:column;gap:15px}
+.chapter{border:1px solid #ecd6c9;border-radius:17px;background:var(--surface);box-shadow:var(--shadow);min-width:0;overflow:hidden;scroll-margin-top:calc(var(--header-h) + 22px)}
+.chapter[open]{border-color:#ebd5c6}
+.chapter-heading{list-style:none;display:flex;align-items:center;gap:16px;min-height:82px;padding:20px 27px;user-select:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+.chapter-heading::marker,.subchapter-heading::marker{content:""}
+.chapter-heading:hover{background:#fffdfa}
+.chapter-icon{width:44px;height:44px;border-radius:12px;background:#fff1ea;display:grid;place-items:center;color:var(--brand);flex-shrink:0}
+.chapter-icon .icon{width:20px;height:20px}
+.chapter-name{display:flex;align-items:center;gap:15px;min-width:0;flex:1}
+.chapter-han{font-size:20px;font-weight:900;color:var(--brand);white-space:nowrap}
+.chapter-dot{color:#c9b4a7;font-size:19px}
+.chapter-title{font-size:20px;line-height:1.5;font-weight:820;letter-spacing:.02em}
+.chapter-meta{font:500 11px Arial,sans-serif;letter-spacing:2px;white-space:nowrap;color:#6b5750;margin-left:auto}
+.chapter-chevron{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;color:#675c56;flex-shrink:0;margin-left:8px}
+.chapter-chevron .icon{width:15px;height:15px;transition:transform .2s}
+.chapter[open]>.chapter-heading .chapter-chevron .icon{transform:rotate(180deg)}
+.chapter-content{padding:0 28px 31px;animation:reveal .22s ease-out}
+@keyframes reveal{from{opacity:.75;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.chapter-intro{font-size:14px;color:#544941;margin:3px 0 24px;line-height:1.9}
+.subchapter{margin:17px 0 0;padding:0 0 12px;border-bottom:1px solid #f7eae3;scroll-margin-top:calc(var(--header-h) + 15px)}
+.subchapter:last-child{border-bottom:0;padding-bottom:0}
+.subchapter-heading{display:flex;align-items:center;gap:12px;list-style:none;cursor:pointer;padding:3px 0 12px;user-select:none}
+.subchapter-marker{width:7px;height:18px;flex-shrink:0;border-radius:2px;background:var(--brand)}
+.subchapter-title{font-size:19px;letter-spacing:.01em;font-weight:800;line-height:1.6;flex:1}
+.subchapter-chevron{display:grid;place-items:center;flex-shrink:0;height:28px;width:28px;border:1px solid var(--line-soft);border-radius:50%;color:#937c6e}
+.subchapter-chevron .icon{width:14px;height:14px;transition:transform .2s}
+.subchapter[open]>.subchapter-heading .subchapter-chevron .icon{transform:rotate(180deg)}
+.subchapter-content{padding:0 0 9px 18px;animation:reveal .2s ease-out}
+.section-lead{margin:0 0 16px;color:#61564e;font-size:14px}
+.step-list{list-style:none;padding:0;margin:20px 0 20px;display:flex;flex-direction:column;gap:13px}
+.step-list li{display:flex;gap:13px;align-items:flex-start;min-width:0}
+.step-number{width:27px;height:27px;flex:0 0 27px;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font:800 13px Arial,sans-serif;margin-top:1px}
+.step-list p{margin:0;font-size:14px;color:#302b28;line-height:1.85}
+.manual-figure{
+  margin:22px 0 19px;
+  width:fit-content;
+  max-width:100%;
+}
+
+.figure-media{
+  position:relative;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:fit-content;
+  max-width:100%;
+
+  padding:8px;
+
+  border:1px solid #eddacd;
+  border-radius:12px;
+  background:#fffbf8;
+
+  overflow:hidden;
+}
+
+.manual-image{
+  display:block;
+
+  width:auto;
+  height:auto;
+
+  max-width:100%;
+  max-height:420px;
+
+  object-fit:contain;
+
+  border-radius:8px;
+  cursor:zoom-in;
+}
+.figure-media.is-empty{background:repeating-linear-gradient(135deg,#fffaf6,#fffaf6 13px,#fff8f2 13px,#fff8f2 26px)}
+.figure-media.is-empty .manual-image{display:none}
+.image-empty{display:none;text-align:center;flex-direction:column;align-items:center;gap:5px;color:#957f72;padding:24px}
+.is-empty .image-empty{display:flex}
+.image-empty-icon{width:36px;height:36px;fill:none;stroke:#d7ae99;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px}
+.image-empty strong{font-size:14px;color:#9d7e6c;line-height:1.5}
+.image-empty span{font-size:11px}
+.image-empty code{font-size:11px;background:#fff;padding:1px 5px;border:1px solid #f2e4db;border-radius:5px}
+.image-empty .filename{font-size:12px;color:#bb6648;padding:5px 9px;margin-top:4px;overflow-wrap:anywhere}
+.zoom-button{position:absolute;right:10px;bottom:10px;display:grid;place-items:center;border:1px solid #eedcd1;width:35px;height:35px;border-radius:9px;color:var(--brand-deep);background:rgba(255,255,255,.95);box-shadow:0 4px 15px rgba(54,37,21,.08)}
+.zoom-button:disabled{display:none}
+.zoom-button:hover:not(:disabled){background:var(--brand);color:white}
+.zoom-button .icon{width:18px;height:18px}
+.manual-figure figcaption{font-size:12px;color:#756258;text-align:center;margin-top:10px;line-height:1.6}
+.figure-hint{font-size:11px;color:#b39e91;margin-left:10px}
+.note{display:flex;align-items:flex-start;gap:12px;background:#fff6f0;border-left:4px solid var(--brand);border-radius:0 6px 6px 0;padding:14px 17px;margin:22px 0 5px;color:#5c4436}
+.note .icon{margin-top:3px;color:var(--brand);width:17px;height:17px}
+.note p{margin:0;font-size:13px;line-height:1.8}
+.note strong{color:#d64c29;margin-right:5px}
+.page-footer{border-top:1px solid #efdccf;margin-top:37px;padding:24px 5px 0;display:flex;align-items:center;flex-wrap:wrap;gap:7px 13px;color:#8c7a6e;font-size:12px}
+.page-footer>strong{font-size:17px;color:var(--brand-deep);letter-spacing:-.03em}
+.page-footer>p{margin:0;flex-basis:100%;font-size:11px;color:#a49489}
+.no-results{text-align:center;background:white;border:1px solid var(--line);border-radius:14px;padding:50px 20px}
+.no-results .icon{color:#d8aa95;width:35px;height:35px}
+.no-results h2{margin:7px 0 1px;font-size:19px}
+.no-results p{color:#958074;font-size:13px}
+.icon-button{border:0;background:transparent;color:#675e59;width:36px;height:36px;display:grid;place-items:center;border-radius:9px}
+.icon-button:hover{background:var(--brand-soft);color:var(--brand)}
+.toc-menu-button,.close-toc{display:none}
+.back-to-top{position:fixed;right:24px;bottom:24px;z-index:31;width:44px;height:44px;display:grid;place-items:center;border-radius:14px;border:1px solid #f1cbb6;background:var(--brand);color:#fff;box-shadow:0 9px 22px rgba(241,91,56,.24);opacity:0;pointer-events:none;transform:translateY(12px);transition:all .2s}
+.back-to-top.is-visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.back-to-top:hover{background:var(--brand-deep)}
+.image-dialog{
+  position:fixed;
+  inset:0;
+
+  width:100vw;
+  height:100vh;
+
+  max-width:none;
+  max-height:none;
+
+  margin:0;
+  padding:20px;
+
+  border:0;
+  border-radius:0;
+
+  background:rgba(18,18,18,.96);
+
+  overflow:hidden;
+}
+
+.image-dialog::backdrop{
+  background:rgba(0,0,0,.92);
+}
+.manual-link {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+.inline-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin: 0 3px;
+}
+.manual-link:hover {
+  color: #1d4ed8;
+}
+.image-dialog img{
+  display:block;
+
+  width:auto;
+  height:auto;
+
+  max-width:95vw;
+  max-height:88vh;
+
+  object-fit:contain;
+
+  margin:auto;
+
+  cursor:zoom-out;
+}
+
+.image-dialog .dialog-top{
+  color:white;
+}
+
+.image-dialog p{
+  color:#ccc;
+}
+.image-dialog::backdrop{background:rgba(23,15,11,.8);backdrop-filter:blur(5px)}
+.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 1px 10px;font-size:14px;font-weight:700;color:#604f45}
+.dialog-close{
+  display:none;
+}
+@media (max-width:1100px){
+ .page-shell{padding:0 22px;gap:22px;grid-template-columns:220px minmax(0,1fr)}
+ .header-inner{padding:0 22px}
+ .chapter-heading{padding:18px 21px;gap:12px}
+ .chapter-title{font-size:18px}
+ .chapter-content{padding:0 22px 23px}
+ .hero{padding:32px}
+}
+@media (max-width:800px){
+ :root{--header-h:65px}
+ .header-inner{padding:0 16px;gap:9px}
+ .toc-menu-button{display:grid}
+ .brand-main{font-size:20px}
+ .brand-mark{width:35px;height:35px;border-radius:10px}
+ .brand-caption{display:none}
+ .header-print,.search-box kbd{display:none}
+ .search-box{max-width:none;width:min(40vw,270px);height:36px}
+ .page-shell{display:block;padding:0 15px}
+ .main-content{padding:20px 0 50px}
+ .sidebar{position:fixed;z-index:61;top:0;bottom:0;left:0;margin:0;max-height:none;width:min(87vw,310px);border-radius:0 15px 15px 0;padding-top:26px;transform:translateX(-110%);transition:transform .24s ease;box-shadow:0 0 80px rgba(30,18,10,.3)}
+ .sidebar.is-open{transform:translateX(0)}
+ .close-toc{display:grid}
+ .mobile-backdrop:not([hidden]){display:block;position:fixed;inset:0;background:rgba(24,17,13,.42);z-index:60}
+ .hero{padding:27px 24px}
+ .hero h1{font-size:30px}
+ .toolbar{padding-top:17px}
+}
+@media (max-width:560px){
+ body{font-size:14px}
+ .header-inner{padding:0 11px}
+ .brand{gap:6px}
+ .brand-main{font-size:18px}
+ .search-box{width:37vw;padding:0 8px;gap:5px}
+ .search-box input{font-size:11px}
+ .search-box .icon{width:15px;height:15px}
+ .hero{border-radius:15px;padding:25px 20px}
+ .hero h1{font-size:27px}
+ .hero>p{font-size:12px;line-height:1.8}
+ .hero-tags{gap:6px;margin-top:20px}
+ .hero-tags span{font-size:10px;padding:3px 9px}
+ .toolbar{align-items:flex-start;gap:9px;flex-wrap:wrap}
+ .toolbar-label{font-size:16px;width:100%}
+ .toolbar-buttons{margin-left:auto}
+ .chapter-heading{padding:14px 12px;gap:9px;min-height:74px}
+ .chapter-icon{width:37px;height:37px;border-radius:11px}
+ .chapter-icon .icon{width:17px;height:17px}
+ .chapter-name{gap:7px}
+ .chapter-han{font-size:16px}
+ .chapter-dot{font-size:14px}
+ .chapter-title{font-size:16px}
+ .chapter-meta{display:none}
+ .chapter-chevron{width:29px;height:29px;margin-left:0}
+ .chapter-content{padding:0 16px 23px}
+ .chapter-intro,.section-lead,.step-list p{font-size:13px}
+ .subchapter-title{font-size:16px}
+ .subchapter-heading{gap:8px}
+ .subchapter-content{padding-left:5px}
+ .step-list li{gap:10px}
+ .step-number{width:24px;height:24px;flex-basis:24px;font-size:12px}
+ .figure-media{aspect-ratio:5/3}
+ .image-empty span{display:none}
+ .image-empty .filename{font-size:10px}
+ .manual-figure figcaption{font-size:11px}
+ .figure-hint{display:block;margin-left:0}
+ .note{padding:12px}
+ .back-to-top{width:39px;height:39px;right:14px;bottom:14px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media print{
+ :root{--page-bg:#fff}
+ @page{size:A4;margin:15mm}
+ body{background:#fff;color:#000;font-size:10pt}
+ .top-accent,.site-header,.sidebar,.toolbar-buttons,.back-to-top,.zoom-button,.figure-hint,.mobile-backdrop,.image-dialog,.sidebar-foot{display:none!important}
+ .page-shell{display:block;padding:0;margin:0}
+ .main-content{padding:0}
+ .hero{box-shadow:none;border:0;border-bottom:1px solid #ddd;padding:0 0 12px;margin-bottom:18px;border-radius:0;background:#fff}
+ .hero::before,.hero::after,.hero-tags{display:none}
+ .hero h1{font-size:23pt}
+ .toolbar{padding:0 0 12px}
+ .chapter{page-break-inside:avoid;break-inside:avoid;box-shadow:none;border-color:#ddd;border-radius:6px;margin-bottom:15px}
+ .chapters{display:block}
+ .chapter-heading{min-height:auto;padding:10px 13px}
+ .chapter-title{font-size:14pt}
+ .chapter-content{padding:0 14px 14px}
+ .subchapter{break-inside:avoid}
+ .subchapter-title{font-size:12pt}
+ .step-list{gap:7px}
+ .manual-figure{max-width:140mm}
+ .figure-media.is-empty,.manual-figure:has(.is-empty){display:none}
+ .manual-image{max-height:85mm}
+ .page-footer{margin-top:16px}
+}
+.section-title-box{
+  display:block;
+  width:fit-content;
+  max-width:100%;
+
+  margin:24px 0 16px;
+  padding:10px 18px;
+
+  background:#fff8f3;
+  border:1px solid #f1cdbb;
+  border-left:5px solid var(--brand);
+  border-radius:8px;
+
+  color:#4f3d34;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.6;
+}
+.action-button-image{
+  height:38px;
+  width:auto;
+  object-fit:contain;
+  vertical-align:middle;
+  margin:0 5px;
+  border-radius:4px;
+}
+.single-image{
+  width:auto !important;
+  max-width:500px;
+  max-height:380px;
+  margin:0 auto;
+}
+/* ===== 兩層式側邊導覽與捲動同步 ===== */
+.sidebar-chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toc-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.main-screen-title{
+  margin-top:40px;
+}
+
+.toc-subchapters {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0 0 6px 35px;
+  padding-left: 10px;
+  border-left: 1px solid var(--line-soft);
+}
+
+.toc-sublink {
+  display: block;
+  padding: 6px 9px;
+  border-radius: 8px;
+  color: #8b7b72;
+  font-size: 12px;
+  line-height: 1.45;
+  transition: background .15s, color .15s, transform .15s;
+}
+
+.toc-sublink:hover {
+  background: var(--brand-faint);
+  color: var(--brand-deep);
+}
+
+.toc-sublink.is-active {
+  background: var(--brand-soft);
+  color: var(--brand-deep);
+  font-weight: 750;
+  transform: translateX(2px);
+}
+
+.toc-link.is-parent-active {
+  color: var(--brand-deep);
+}
+  
+.document-text{margin:0 0 18px;color:#302b28;font-size:14px;line-height:1.9}.document-text p{margin:0 0 10px}.document-text p:last-child{margin-bottom:0}
+
+/* 2026-11：縮小內文預覽圖，點擊仍可全螢幕查看 */
+.manual-figure { max-width: 430px; }
+.manual-image { width: 100%; height: auto; object-fit: contain; }
+@media (max-width: 560px) { .figure-media { aspect-ratio: auto; } .manual-figure { max-width: min(100%, 360px); } }
+/* 主要操作步驟：橘色圓形數字；子步驟：一般數字 */
+.document-step-list { margin: 0 0 12px; }
+.document-text .nested-step { margin: 0 0 9px 40px; }
+.step-list-heading { margin: 15px 0 9px; }
+.chapter-heading { gap: 12px; }
+</style>
+</head>
+<body>
+<svg aria-hidden="true" class="svg-sprite" xmlns="http://www.w3.org/2000/svg">
+<symbol id="icon-receipt" viewbox="0 0 24 24">
+<path d="M5 3h14v18l-3-2-2.5 2-2.5-2-3 2-3-2V3Z">
+</path>
+<path d="M9 8h6M9 12h6M9 16h3">
+</path>
+</symbol>
+<symbol id="icon-upload" viewbox="0 0 24 24">
+<path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3">
+</path>
+</symbol>
+<symbol id="icon-zap" viewbox="0 0 24 24">
+<path d="m13 2-9 12h7l-1 8 10-12h-7l0-8Z">
+</path>
+</symbol>
+<symbol id="icon-credit-card" viewbox="0 0 24 24">
+<rect height="14" rx="2" width="18" x="3" y="5">
+</rect>
+<path d="M3 10h18M7 15h4">
+</path>
+</symbol>
+<symbol id="icon-settings" viewbox="0 0 24 24">
+<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z">
+</path>
+<path d="m19 13 2-1-2-1-.5-2 1-2-2-2-2 1-2-.5-1-2-1 2-2 .5-2-1-2 2 1 2-.5 2-2 1 2 1 .5 2-1 2 2 2 2-1 2 .5 1 2 1-2 2-.5 2 1 2-2-1-2 .5-2Z">
+</path>
+</symbol>
+<symbol id="icon-rotate-ccw" viewbox="0 0 24 24">
+<path d="M3 11a9 9 0 1 1 3 7M3 4v7h7">
+</path>
+</symbol>
+<symbol id="icon-chart" viewbox="0 0 24 24">
+<path d="M4 20V10m6 10V4m6 16v-7m5 7H2">
+</path>
+</symbol>
+<symbol id="icon-life-buoy" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9">
+</circle>
+<circle cx="12" cy="12" r="4">
+</circle>
+<path d="m5.6 5.6 3.4 3.4m6 6 3.4 3.4m0-12.8L15 9m-6 6-3.4 3.4">
+</path>
+</symbol>
+<symbol id="icon-refresh" viewbox="0 0 24 24">
+<path d="M20 11a8 8 0 0 0-14-5L3 9m0-6v6h6M4 13a8 8 0 0 0 14 5l3-3m0 6v-6h-6">
+</path>
+</symbol>
+<symbol id="icon-layout" viewbox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="3">
+</rect>
+<path d="M3 9h18M9 9v12">
+</path>
+</symbol>
+<symbol id="icon-chevron" viewbox="0 0 24 24">
+<path d="m6 9 6 6 6-6">
+</path>
+</symbol>
+<symbol id="icon-search" viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="7">
+</circle>
+<path d="m20 20-4-4">
+</path>
+</symbol>
+<symbol id="icon-image" viewbox="0 0 24 24">
+<rect height="18" rx="3" width="18" x="3" y="3">
+</rect>
+<circle cx="8.5" cy="8.5" r="1.5">
+</circle>
+<path d="m3 17 5.5-5.5 4 4L15 13l6 6">
+</path>
+</symbol>
+<symbol id="icon-menu" viewbox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16">
+</path>
+</symbol>
+<symbol id="icon-x" viewbox="0 0 24 24">
+<path d="M5 5 19 19M19 5 5 19">
+</path>
+</symbol>
+<symbol id="icon-arrow-up" viewbox="0 0 24 24">
+<path d="M12 19V5m0 0-6 6m6-6 6 6">
+</path>
+</symbol>
+<symbol id="icon-info" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9">
+</circle>
+<path d="M12 11v6M12 7.5h.01">
+</path>
+</symbol>
+<symbol id="icon-zoom" viewbox="0 0 24 24">
+<circle cx="10.5" cy="10.5" r="6.5">
+</circle>
+<path d="m16 16 5 5M10.5 8v5m-2.5-2.5h5">
+</path>
+</symbol>
+<symbol id="icon-book" viewbox="0 0 24 24">
+<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5Zm0 12A2.5 2.5 0 0 1 6.5 15H20">
+</path>
+</symbol>
+</svg>
+<!-- =============== 【網站標頭與側邊章節目錄】 =============== -->
+<div class="top-accent">
+</div>
+<header class="site-header">
+<div class="header-inner">
+<button aria-controls="tocSidebar" aria-expanded="false" aria-label="開啟章節目錄" class="icon-button toc-menu-button" id="openToc" type="button">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-menu">
+</use>
+</svg>
+</button>
+<a aria-label="回到手冊首頁" class="brand" href="#top">
+<span class="brand-mark">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-receipt">
+</use>
+</svg>
+</span>
+<span class="brand-main">
+      iMate
+      <span>
+       Go
+      </span>
+</span>
+</a>
+<div class="header-actions">
+<label class="search-box" for="manualSearch">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-search">
+</use>
+</svg>
+<input aria-label="搜尋手冊內容" autocomplete="off" id="manualSearch" placeholder="搜尋操作說明、功能名稱..." type="search"/>
+</label>
+</div>
+</div>
+</header>
+<div class="mobile-backdrop" hidden="" id="mobileBackdrop">
+</div>
+<div class="page-shell" id="top">
+<aside aria-label="手冊章節目錄" class="sidebar" id="tocSidebar">
+<div class="sidebar-top">
+<div>
+<span class="sidebar-kicker">
+       USER MANUAL
+      </span>
+<h2>
+       使用操作目錄
+      </h2>
+</div>
+<button aria-label="關閉目錄" class="icon-button close-toc" id="closeToc" type="button">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-x">
+</use>
+</svg>
+</button>
+</div>
+<div class="sidebar-chapters"><a class="toc-link" data-target="invoice-number" href="#invoice-number"><span class="toc-no">01</span><span>發票字軌取號</span></a><a class="toc-link" data-target="products" href="#products"><span class="toc-no">02</span><span>匯入商品資料</span></a><a class="toc-link" data-target="quick-checkout" href="#quick-checkout"><span class="toc-no">03</span><span>快速開發票</span></a><a class="toc-link" data-target="pos-functions" href="#pos-functions"><span class="toc-no">04</span><span>銷售前台功能</span></a><a class="toc-link" data-target="settings" href="#settings"><span class="toc-no">05</span><span>設定說明</span></a><a class="toc-link" data-target="invoice-management" href="#invoice-management"><span class="toc-no">06</span><span>作廢、補印、作廢註銷</span></a><a class="toc-link" data-target="reports" href="#reports"><span class="toc-no">07</span><span>報表</span></a><a class="toc-link" data-target="system-log" href="#system-log"><span class="toc-no">08</span><span>回報系統紀錄</span></a><a class="toc-link" data-target="software-update" href="#software-update"><span class="toc-no">09</span><span>軟體更新</span></a><a class="toc-link" data-target="backoffice" href="#backoffice"><span class="toc-no">10</span><span>營運管理平台說明</span></a><a class="toc-link" data-target="troubleshooting" href="#troubleshooting"><span class="toc-no">11</span><span>疑難排除</span></a></div>
+</aside>
+<main class="main-content" id="mainContent">
+<section aria-labelledby="pageTitle" class="hero">
+<div class="hero-overline"><span class="hero-pip"></span>IMATEGO · USER GUIDE</div>
+<h1 id="pageTitle">iMateGo<br/><span>行動POS操作說明</span></h1>
+<p>iMateGo行動發票點餐系統說明手冊</p>
+</section>
+<div aria-label="手冊操作工具" class="toolbar">
+<div class="toolbar-label">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-book">
+</use>
+</svg>
+<span>
+       操作指南
+      </span>
+<span aria-live="polite" class="toolbar-count" id="searchStatus" role="status">共 11 個章節</span>
+</div>
+<div class="toolbar-buttons">
+<button class="control-button" id="expandAll" type="button">
+       全部展開
+      </button>
+<button class="control-button" id="collapseAll" type="button">
+       全部收合
+      </button>
+</div>
+</div>
+<!-- =============== 【主要編輯區：11 大章及所屬小節】 ===============
+     按 Ctrl+F 搜尋「第 01 章」、「第 02 章」……直接跳轉。
+     變更圖片：修改 &lt;img src="./assets/images/檔名.png"&gt;，再放入對應檔案。
+     請勿移除章節 &lt;details&gt; 或 &lt;summary&gt;，它們是原生收合功能。
+================================================================== -->
+<div class="chapters" id="manualChapters"><details class="chapter" data-chapter="發票字軌取號" id="invoice-number" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">壹</span><span class="chapter-dot">·</span><span class="chapter-title">發票字軌取號</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content">
+<div class="subchapter-content">
+<ol class="step-list">
+<li><span class="step-number">1</span><p>進入發票設定的頁面，點選『開始取號』，會產生一組發票號碼。（組數取決於當時加值平台的設定多寡)</p></li>
+<li><span class="step-number">2</span><p>點選『配號資訊』會顯示當期的發票配號資訊（圖中紅色方框）。</p></li>
+<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p></p>※※組數越多等候時間越久，非系統當機請耐心等候※※</aside>
+</ol><figure class="manual-figure"><div class="figure-media"><img alt="發票字軌取號" class="manual-image" loading="lazy" src="./assets/images/發票字軌取號.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">發票字軌取號.png</code></div><button aria-label="放大查看：發票字軌取號" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</div>
+</details>
+<details class="chapter" data-chapter="匯入商品資料" id="products" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">貳</span><span class="chapter-dot">·</span><span class="chapter-title">匯入商品資料</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content">
+<ol class="step-list">
+<li><span class="step-number">1</span><p>進到營運管理平台(<a class="manual-link" href="https://omp.imate.pro/login" rel="noopener noreferrer" target="_blank">
+  https://omp.imate.pro/login
+</a>）後點擊左側的『商品管理』，按一下左上角紫色的『商品範本』導出空白範本的xlsx檔案，下載後可以依照商品分類、項目及註記在此檔案上編輯。</p></li>
+<li><span class="step-number">2</span><p>菜單編輯完成後，接著點擊『批次導入』--&gt;『選擇檔案』選擇編輯好的『商品範本』xlsx檔案後按「開始導入」。</p></li>
+<li><span class="step-number">3</span><p>完成商品導入後在「商品分類」(圖中紅色圈圈)中可以點擊『綁定商品』去選擇或搜尋商品去做綁定歸類在此分類。</p></li>
+<li><span class="step-number">4</span><p>完成所有商品綁定分類後，接著到「分類指派」(圖中橘色圈圈)<br/>1. 選擇要指派的商品， 再選擇要讓這些商品同步到哪一台「POS機編號」。<br/>2. 如果同一個統編（店）有兩台以上的POS機，就會出現兩個以上的編號 。假設要將商品同步到兩台以上的POS機，那記得都要點選到。<br/>3. 選擇完畢後按下『儲存指派』即可同步。</p></li>
+<li><span class="step-number">5</span><p>回到POS機，將POS機結束程式再重新開啟程式，商品會自動同步。</p></li>
+</ol>
+<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p>※※如需更新商品就點擊右上角『下載目前商品』(橘色框框)去做修改，完畢後再將修改後的檔案重新導入※※</p></aside>
+<figure class="manual-figure"><div class="figure-media"><img alt="匯入商品資料" class="manual-image" loading="lazy" src="./assets/images/匯入商品.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">02-download-template.png</code></div><button aria-label="放大查看：匯入商品資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details>
+<details class="chapter" data-chapter="快速開發票" id="quick-checkout" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">參</span><span class="chapter-dot">·</span><span class="chapter-title">快速開發票</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><details class="subchapter" id="normal-checkout" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)一般商品結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><ol class="step-list">
+<li><span class="step-number">1</span><p>藍色箭頭為<span style="color:#1b4dd7;">商品分類</span>，滑動進行點選。</p></li>
+<li><span class="step-number">2</span><p><span style="color:#ee1111;">商品</span>可上下滑動，選擇商品後，點選備註。</p></li>
+<li><span class="step-number">3</span><p>商品確認無誤點擊『結帳』即可。</p></li>
+</ol><figure class="manual-figure"><div class="figure-media"><img alt="一般商品結帳" class="manual-image" loading="lazy" src="./assets/images/快速開發票(一般).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">06-product-checkout.png</code></div><button aria-label="放大查看：一般商品結帳" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details><details class="subchapter" id="price-first" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)價格優先結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><ol class="step-list">
+<li><span class="step-number">1</span><p>先點數字鍵輸入金額，再點選商品。</p></li>
+<li><span class="step-number">2</span><p>點選「結帳」即完成作業。</p></li>
+<figure class="manual-figure"><div class="figure-media"><img alt="價格優先結帳" class="manual-image" loading="lazy" src="./assets/images/快速開發票(價格).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">07-price-first.png</code></div><button aria-label="放大查看：價格優先結帳" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></ol></div>
+<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p>＊預設為「價格優先」，如需改為「數量優先」請至「基本設定」中修改。</p></aside>
+</details><details class="subchapter" id="custom-item-checkout" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)自訂義商品結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><ol class="step-list">
+<li><span class="step-number">1</span><p>點選商品觸發模式可以選擇要數量優先還是價格優先，而自定義商品是<a href="#basic-settings" class="manual-link">『價格優先』</a>。</p></li>
+<li><span class="step-number">2</span><p>只需在主畫面輸入數字，直接著按「結帳」就可以直接開出自訂義商品的發票。</p></li>
+</ol></div>
+</details></div>
+</details>
+<details class="chapter" data-chapter="銷售前台功能" id="pos-functions" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">肆</span><span class="chapter-dot">·</span><span class="chapter-title">銷售前台功能</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><details class="subchapter" id="item-editing" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)商品鍵入及修改、折扣</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content">
+<ol class="step-list step-list-heading"><li><span class="step-number">1</span><p>點選畫面鍵入 :</p></li></ol>
+<div class="document-text"><p class="nested-step">1. 選擇類別、商品、以及點選加購/註記 。</p><p class="nested-step">2. 鍵入後商品會出現在右半部，並且會出現商品的加購/註記 。</p><p class="nested-step">3. 商品確認無誤後按『結帳』即可。</p></div>
+<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p><strong>如所有商品皆不需註記，請至營運管理平台修改」</strong></p></aside>
+<figure class="manual-figure">
+  <div class="figure-media">
+    <img
+      class="manual-image"
+      src="./assets/images/商品註記.png"
+      alt="商品註記"
+      loading="lazy"
+    />
+
+    <button
+      class="zoom-button"
+      type="button"
+      aria-label="放大查看註記設定"
+      title="放大圖片"
+    >
+      <svg class="icon" aria-hidden="true">
+        <use href="#icon-zoom"></use>
+      </svg>
+    </button>
+  </div>
+
+</figure>
+<ol class="step-list step-list-heading"><li><span class="step-number">2</span><p>掃條碼鍵入 :</p></li></ol>
+<div class="document-text"><p class="nested-step">1. 使用內建的紅外線掃描器，可直接使用設備掃商品條碼進行結帳。</p><p class="nested-step">2. 若沒有紅外線掃碼設備，可點擊<img
+    src="./assets/images/紅外線.png"
+    class="inline-icon"
+    alt="相機圖示"
+  >圖示會開啟相機，可用設備的內建相機掃條碼（速度較慢）。</p><p class="nested-step">3. 掃描時程式會查詢商品資料庫中的商品，有此商品則會顯示於清單中，如果沒有此商品則會顯示查無資料。（如果確定資料庫有此商品，掃描後顯示查無資料，重新掃描即可）</p><p class="nested-step">4. 如同一商品有多個，可先輸入數量再掃描條碼（「基本設定」處要設定「數量優先」）。</p><p class="nested-step">5. 商品掃描結束後確認清單內容，點選『結帳』即完成交易。</p></div>
+<ol class="step-list step-list-heading"><li><span class="step-number">3</span><p>修改商品 :</p></li></ol>
+<div class="document-text"><p class="nested-step">1. 以鍵入的商品可以利用+/-去做修改數量。</p><p class="nested-step">2. 將商品往右滑可將單品刪除。</p>
+<figure class="manual-figure">
+  <div class="figure-media">
+    <img
+      class="manual-image"
+      src="./assets/images/修改商品1.png"
+      alt="修改商品"
+      loading="lazy"
+    />
+    <button
+      class="zoom-button"
+      type="button"
+      aria-label="放大查看註記設定"
+      title="放大圖片"
+    >
+      <svg class="icon" aria-hidden="true">
+        <use href="#icon-zoom"></use>
+      </svg>
+    </button>
+  </div>
+
+</figure>
+<p class="nested-step">3. 修改<span style="color:#ad00d8;">註記內容</span>，<span style="color:#ad00d8;">點一下</span>該商品就可以直接修改。</p><p class="nested-step">4. 修改<span style="color:#0f611f;">單價、數量</span>，<span style="color:#0f611f;">長按</span>商品即可修改。</p></div>
+<figure class="manual-figure">
+  <div class="figure-media">
+    <img
+      class="manual-image"
+      src="./assets/images/修改商品2.png"
+      alt="修改商品"
+      loading="lazy"
+    />
+
+    <button
+      class="zoom-button"
+      type="button"
+      aria-label="放大查看註記設定"
+      title="放大圖片"
+    >
+      <svg class="icon" aria-hidden="true">
+        <use href="#icon-zoom"></use>
+      </svg>
+    </button>
+  </div>
+
+</figure>
+<ol class="step-list step-list-heading"><li><span class="step-number">4</span><p>折扣設定 :</p></li></ol>
+<div class="document-text"><p class="nested-step">1. 先按數字再選「功能」列表中的「整單折扣」。</p><p class="nested-step">2. 畫面中就會顯示『應稅折扣』。</p></div>
+<figure class="manual-figure">
+  <div class="figure-media">
+    <img
+      class="manual-image"
+      src="./assets/images/折扣設定.png"
+      alt="折扣設定"
+      loading="lazy"
+    />
+
+    <button
+      class="zoom-button"
+      type="button"
+      aria-label="放大查看註記設定"
+      title="放大圖片"
+    >
+      <svg class="icon" aria-hidden="true">
+        <use href="#icon-zoom"></use>
+      </svg>
+    </button>
+  </div>
+
+</figure>
+<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p>＊預設為「金額折扣($)」，如需改為「百分比折扣(%)」，請至「基本設定」中的整單折扣修改。</p></aside>
+<p class="section-lead main-screen-title">＊主畫面說明</p>
+<figure class="manual-figure"><div class="figure-media"><img alt="主畫面說明" class="manual-image" loading="lazy" src="./assets/images/主畫面說明.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">08-add-edit-items.png</code></div><button aria-label="放大查看：主畫面說明" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+
+<!-- （二）發票設定 -->
+<details class="subchapter" id="invoice-options" open="">
+  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)發票設定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+  <div class="subchapter-content">
+    <div class="document-text">
+      <ol class="step-list">
+        <li><span class="step-number">1</span><p>點擊『功能』列表中的『統一編號』、『發票載具』及『發票捐贈』。</p></li>
+        <li><span class="step-number">2</span><p>選擇要輸入的設定點開，並且輸入數字或點視窗中<img src="./assets/images/搜尋.png" class="inline-icon" alt="搜尋圖示">圖示，完成後就會出現以下樣式。</p></li>
+      </ol>
+    </div>
+    <figure class="manual-figure"><div class="figure-media"><img alt="發票設定" class="manual-image" loading="lazy" src="./assets/images/發票設定.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">10-invoice-options.png</code></div><button aria-label="放大查看：發票設定" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+  </div>
+</details>
+
+<!-- （三）多元支付 -->
+<details class="subchapter" id="payment-methods" open="">
+  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)多元支付</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+  <div class="subchapter-content">
+    <div class="document-text">
+      <ol class="step-list">
+        <li><span class="step-number">1</span><p>有串接NFC感應付款、掃碼支付的店家可使用多元支付功能。</p></li>
+        <li><span class="step-number">2</span><p>點擊『功能』列表中的『多元支付』，畫面會自動跳到串接的支付聯卡感應收款平台。</p></li>
+        <li><span class="step-number">3</span><p>操作完扣到款後會主動結帳印發票。</p></li>
+      </ol>
+    </div>
+    <figure class="manual-figure"><div class="figure-media"><img alt="多元支付" class="manual-image" loading="lazy" src="./assets/images/多元支付.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：多元支付" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+  </div>
+</details>
+
+<!-- （四）暫存掛單及載入掛單 -->
+<details class="subchapter" id="hold-order" open="">
+  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(四)暫存掛單及載入掛單</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+  <div class="subchapter-content">
+    <div class="document-text">
+      <ol class="step-list">
+        <li><span class="step-number">1</span><p>如有單需稍後再付款可以點選功能列中的「暫存掛單」，商品會儲存到內；要付款時在點擊「載入掛單」就可以選擇要結帳的單。</p></li>
+      </ol>
+    </div>
+    <figure class="manual-figure"><div class="figure-media"><img alt="暫存掛單及載入掛單" class="manual-image" loading="lazy" src="./assets/images/暫存掛單.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：暫存掛單" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+  </div>
+</details>
+
+<!-- （五）其他支付 -->
+<details class="subchapter" id="other-payment" open="">
+  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(五)其他支付</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+  <div class="subchapter-content">
+    <div class="document-text">
+      <ol class="step-list">
+        <li><span class="step-number">1</span><p>提供其他付款方式，可自行定義名稱(現金、Line Pay)，但沒有串接支付商，如需串接支付功能請洽系統商申請。</p></li>
+        <li><span class="step-number">2</span><p>請先於下方<span style="color:#ee1111;">紅色框位置</span>的數字鍵輸入金額後，點擊<span style="color:#f15b38;">橘色框</span>『功能』列表中的『其他支付』，選擇支付方式，按下確認結帳即可印出發票。</p></li>
+      </ol>
+    </div>
+    <figure class="manual-figure"><div class="figure-media"><img alt="其他支付" class="manual-image" loading="lazy" src="./assets/images/其他支付.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：其他支付" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+  </div>
+</details>
+
+<!-- （六）確認「結帳商品」功能 -->
+<details class="subchapter" id="checkout-review" open="">
+  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(六)確認「結帳商品」功能</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+  <div class="subchapter-content">
+    <p class="section-lead">在設定好發票後，如不需用多元支付，可使用「結帳商品」功能，核對客人點餐內容，在小視窗「確認結帳」就會直接印發票。</p>
+    <div class="document-text">
+      <ol class="step-list">
+        <li><span class="step-number">1</span><p>點選「結帳商品」可看到已點的商品列表。</p></li>
+        <li><span class="step-number">2</span><p>跟客人核對後，按下「確認結帳」會直接完成結帳，如發票未設定載具/統編/愛心碼者，需先完成設定，如果要使用多元支付者不適合用此功能。</p></li>
+      </ol>
+    </div>
+    <figure class="manual-figure"><div class="figure-media"><img alt="確認結帳商品功能" class="manual-image" loading="lazy" src="./assets/images/確認結帳功能.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">12-review-checkout.png</code></div><button aria-label="放大查看：確認結帳商品功能" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+  </div>
+</details>
+</div>
+</details>
+
+<details class="chapter" data-chapter="設定說明" id="settings" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">伍</span><span class="chapter-dot">·</span><span class="chapter-title">設定說明</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><details class="subchapter" id="company-settings" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)「公司設定」說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><p class="section-lead">此頁的資料大多是雲端設定後，再次按「已完成認證」，可在次同步變更。</p><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>設定發票抬頭：於「發票LOGO」處，鍵入要顯示於發票抬頭的文字，如有上傳圖片者，需於此輸入大寫英文「IMAGE」，即可顯示於抬頭。</p></li></ol></div>
+</div>
+</details>
+<!-- （二）基本設定 -->
+<details class="subchapter" id="basic-settings" open="">
+  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)「基本設定」功能說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+
+  <div class="subchapter-content">
+    <div class="document-text">
+
+      <!-- 第一點 -->
+      <ol class="step-list document-step-list">
+        <li><span class="step-number">1</span><p>點擊主畫面右上角的三點，選擇『基本設定』。設定說明如下圖。</p></li>
+      </ol>
+      <figure class="manual-figure"><div class="figure-media"><img alt="基本設定" class="manual-image" loading="lazy" src="./assets/images/設定說明.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">13-company-settings.png</code></div><button aria-label="放大查看：基本設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+      <!-- 第二點 -->
+      <ol class="step-list document-step-list">
+        <li><span class="step-number">2</span><p>發票備註說明：基本設定中「備註」，設定後會顯示在前台，畫面如下圖中的「請輸入發票備註」內容會成為預設，無另外修改就會印出字樣。</p></li>
+      </ol>
+
+    </div>
+
+    <!-- 原本第二點下方的圖片 -->
+    <figure class="manual-figure">
+        <div class="figure-media">
+          <img alt="發票備註功能" class="manual-image" loading="lazy" src="./assets/images/發票備註功能.png"/>
+          <div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">發票備註功能.png</code></div>
+          <button aria-label="放大查看：發票備註功能" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button>
+        </div>
+      </figure>
+  </div>
+</details>
+<details class="subchapter" id="printer-settings" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)「出單機設定」說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>「使用本機印表機」：下圖紅色框，開啟時印完發票後會於本機列廚房單。 成功後返回主畫面點選菜單，選擇完畢結帳後會出現提示字，『需先手動將發票撕下』按確認後才會繼續出廚房單。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>「使用廚房印表機」：下圖橘框，可串接其他印表機列印廚房單，最多可串接三台，開啟後，輸入印表機IP、Port(9100)，即可測試連線列印。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>「使用廚房印表機」：下圖紫色框，可串接標籤印表機，列印杯貼，最多可串接三台，開啟後，輸入印表機IP、Port(9100)，即可測試連線列印。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="出單機設定" class="manual-image" loading="lazy" src="./assets/images/廚房單印表機.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">15-printer-settings.png</code></div><button aria-label="放大查看：出單機設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details></div>
+</details>
+<details class="chapter" data-chapter="作廢、補印、作廢註銷" id="invoice-management" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">陸</span><span class="chapter-dot">·</span><span class="chapter-title">作廢、補印、作廢註銷</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><details class="subchapter" id="void-invoice" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)作廢</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點左側選單進入『查詢發票』頁面。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>利用左右箭頭選擇或是搜尋欲退貨的發票後，可以自行選擇要退貨的項目，選擇完畢後後點「作廢」。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>如是部分作廢者，作廢後會主動再印一張，沒有作廢的商品的發票。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="作廢" class="manual-image" loading="lazy" src="./assets/images/作廢.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">16-void-invoice.png</code></div><button aria-label="放大查看：作廢" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details><details class="subchapter" id="reprint-invoice" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)補印</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>找到須補印發票號碼後，點選「補印」。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>發票補印出來後，紙本上會顯示此發票為補印，時間也會顯示補印時間。</p></li>
+<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><div><p>※ 作廢發票不可補印。</p><p>※ 上方搜尋欄可輸入<strong>完整發票號碼</strong>快速查找發票。</p></div></aside>
+<figure class="manual-figure"><div class="figure-media"><img alt="補印" class="manual-image" loading="lazy" src="./assets/images/補印.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">17-reprint-invoice.png</code></div><button aria-label="放大查看：補印" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details><details class="subchapter" id="reverse-void" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)作廢註銷</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>此功能是將已作廢的發票取消作廢。需於發票作廢後十分鐘才能執行「作廢註銷」的功能。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>先找到要作廢註銷的發票號碼後，按右上角的三個點，會看到作廢註銷，點入後會有提示訊息，接著輸入密碼：當天的西元年減月減日，即完成作廢註銷。（如下圖）</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="作廢註銷" class="manual-image" loading="lazy" src="./assets/images/作廢註銷.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">18-reverse-void.png</code></div><button aria-label="放大查看：作廢註銷" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details></div>
+</details>
+<details class="chapter" data-chapter="報表" id="reports" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">柒</span><span class="chapter-dot">·</span><span class="chapter-title">報表</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><details class="subchapter" id="export-sales" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)匯出銷售紀錄</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>選單進入『發票設定』，點選『上傳銷售紀錄』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>如需下載多日銷售紀錄，也可選擇『開始日期』與『結束日期』再做匯出。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>當次匯出總金額會同步顯示於畫面中，可供對帳用。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="匯出銷售紀錄" class="manual-image" loading="lazy" src="./assets/images/報表.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">19-export-records.png</code></div><button aria-label="放大查看：匯出銷售紀錄" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details><details class="subchapter" id="daily-report" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)列印日結報表</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>左側欄位選單進入『發票設定』，點選『列印日結報表』即可列印出來。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>如需彙整多日銷售報表，也可選擇『開始日期』與『結束日期』再點選『列印日結報表』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>點擊左側欄位的『日結報表』也可以做匯出。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="列印日結報表" class="manual-image" loading="lazy" src="./assets/images/列印日節報表.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">20-daily-report.png</code></div><button aria-label="放大查看：列印日結報表" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details></div>
+</details>
+<details class="chapter" data-chapter="回報系統紀錄" id="system-log" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">捌</span><span class="chapter-dot">·</span><span class="chapter-title">回報系統紀錄</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點擊左上選單後點選『回報系統紀錄』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>或於「發票設定」頁面右上角三個點點，中點選「回報系統紀錄」。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="回報系統紀錄" class="manual-image" loading="lazy" src="./assets/images/回報系統紀錄.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">21-report-logs.png</code></div><button aria-label="放大查看：回報系統紀錄" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details>
+<details class="chapter" data-chapter="軟體更新" id="software-update" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">玖</span><span class="chapter-dot">·</span><span class="chapter-title">軟體更新</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>先點選主畫面右上角的三個點點進入『公司設定』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>進到畫面後點擊右上角的『軟體更新』，接著會陸續跳出提示訊息引導安裝。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>當跳出安全防護時點擊「更多詳情」後會出現「不掃描就安裝」，按此下載。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">4</span><p>完成安裝。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="軟體更新" class="manual-image" loading="lazy" src="./assets/images/軟體更新.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">22-update-app.png</code></div><button aria-label="放大查看：軟體更新" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details>
+<details class="chapter" data-chapter="營運管理平台說明" id="backoffice" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">拾</span><span class="chapter-dot">·</span><span class="chapter-title">營運管理平台說明</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><details class="subchapter" id="account-security" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)密碼修改、忘記密碼、帳號鎖定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><p class="nested-step">1. 修改密碼：營運管理平台(<a class="manual-link" href="https://omp.imate.pro/login" target="_blank" rel="noopener noreferrer"> https://omp.imate.pro/login</a>)，第一次登入後請於右上角的<img src="./assets/images/個人資料.png" class="inline-icon" alt="個人資料">「個人資料」中更改密碼，（如下圖）</p>
+<figure class="manual-figure"><div class="figure-media"><img alt="密碼修改、忘記密碼、帳號鎖定" class="manual-image" loading="lazy" src="./assets/images/營運管理(密碼).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">23-account-security.png</code></div><button aria-label="放大查看：密碼修改、忘記密碼、帳號鎖定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+<p class="nested-step">2. 忘記密碼：如忘記密碼可輸入此帳號綁定的Email收信，修改密碼。</p><p class="nested-step">3.帳號鎖定：密碼輸入錯誤達五次後，帳號即被鎖定，需輸入此帳號綁定的Email，通知解鎖。</p></div>
+</details><details class="subchapter" id="backoffice-products" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)商品管理</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><p class="section-lead">如需修改、新增商品，可用以下兩個方式處理。</p>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p><a href="#products" class="manual-link">匯入商品</a>：請點選「下載目前商品」的檔案做新增編輯之後，上傳並設定分類及指派。</p></li><li><span class="step-number">2</span><p>手動新增，點選右邊藍色的按鈕，<img src="./assets/images/新增分類.png" class="action-button-image" alt="新增分類">，之後綁定商品、標籤，最後完成分類指派。</p></li></ol>
+<p>＊如是手動鍵入的商品，建議完成新增/修改後，再下載一次「下載目前商品」儲存此檔案備用。</p>
+<div class="section-title-box">如何將商品綁定分類及分類指派??</div></p><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>綁定分類:</p></li></ol><p class="nested-step">1. 在商品分類中找尋要綁定的類別後點擊右側的「綁定商品」。</p><p class="nested-step">2. 跳出畫面後可勾選或查詢欲綁定的商品，選擇完畢後點擊右下角的「確認綁定」即可。</p>
+<figure class="manual-figure"><div class="figure-media"><img alt="綁定分類" class="manual-image" loading="lazy" src="./assets/images/綁定分類.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>綁定分類</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">綁定分類.png</code></div><button aria-label="放大查看：綁定分類" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<ol class="step-list document-step-list"><li><span class="step-number">2</span><p>分類指派:</p></li></ol><p class="nested-step">1. 在指派設定中先選擇好要綁定的POS機編號。</p><p class="nested-step">2. 勾選要綁定的類別後按「儲存指派」即可。</p>
+<figure class="manual-figure"><div class="figure-media"><img alt="分類指派" class="manual-image" loading="lazy" src="./assets/images/分類指派.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>分類指派</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">分類指派.png</code></div><button aria-label="放大查看：分類指派" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<p class="nested-step">3. 排序：「商品分類」「商品清單」「註記標籤」，的頁面中，都有黃色的<img src="./assets/images/排序.png" class="action-button-image" alt="排序">，點選後，直接用游標拖拉要排序的順序即可。</p>
+</details><details class="subchapter" id="backoffice-reports" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)訂單帳務管理</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><p class="section-lead">提供六項報表「營業匯總表」、「商品銷售排行」、「結帳時段統計」、「交易明細統計」、「訂單商品明細」、「營業報表」查詢，可自行選擇日期區間，查詢並匯出報表。</p><figure class="manual-figure"><div class="figure-media"><img alt="訂單帳務管理" class="manual-image" loading="lazy" src="./assets/images/訂單帳務管理.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">訂單帳務管理.png</code></div><button aria-label="放大查看：訂單帳務管理" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</details><details class="subchapter" id="shop-settings" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(四)商店功能設定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><p class="section-lead">提供「離線付款方式」以及「自訂品項」，商店清單中找到自己的商店在右側按下設定，預設皆為停用需自行啟用(<span style="color:#ee1111;">紅色框</span>)。「離線付款方式」啟用後即可設定付款方式，按住左側的 ⋮ 圖示可自行調整順序(<span style="color:#1b4dd7;">藍色框</span>) ，請注意如付款方式無需使用關掉即可(<span style="color:#f15b38;">橘色框</span>)，若該<span style="color:#ee1111;"><strong>付款方式已有銷售則無法刪除</strong></span>。「自訂品項」啟用後即可鍵入但只能輸入一樣。兩個設定有更動皆需要關掉程式重啟。</p></div>
+<figure class="manual-figure"><div class="figure-media"><img alt="商店功能設定" class="manual-image" loading="lazy" src="./assets/images/商店功能設定.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>商店功能設定</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">商店功能設定.png</code></div><button aria-label="放大查看：商店功能設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<figure class="manual-figure"><div class="figure-media"><img alt="商店功能設定(離線支付)" class="manual-image" loading="lazy" src="./assets/images/商店功能設定(離線支付).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>商店功能設定(離線支付)</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">商店功能設定(離線支付).png</code></div><button aria-label="放大查看：商店功能設定(離線支付)" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+
+</details></div>
+</details>
+<details class="chapter" data-chapter="疑難排除" id="troubleshooting" open="">
+<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">拾壹</span><span class="chapter-dot">·</span><span class="chapter-title">疑難排除</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapter-content"><details class="subchapter" id="invoice-maintenance" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)維護發票資料</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><p class="section-lead">當發票使用完畢再次取號後回到主畫面依舊是0張發票，但事實上已經取好了，處理此問題時可參考以下作法 :</p>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點擊「發票設定」中右上角的三個點點，點選「維護發票資料」，它會處理最近一次的問題排除，點擊後就可以正常開立發票了。</p></li><li><span class="step-number">2</span><p>將頁面整個滑掉在重新開啟一次重新整理頁面，也可以正常開立發票。</p></li></ol>
+
+<figure class="manual-figure"><div class="figure-media"><img alt="維護發票資料" class="manual-image" loading="lazy" src="./assets/images/維護發票資料.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>維護發票資料</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">維護發票資料.png</code></div><button aria-label="放大查看：維護發票資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+</details><details class="subchapter" id="manual-upload" open="">
+<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)手動上傳發票</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>如果在沒有網路的情況下開立發票是無法自動上傳發票的，需等連接網路時到發票設定中點擊「手動上傳發票」，將發票上傳至票中心。</p></li><li><span class="step-number">2</span><p>如果需要上傳有區間段的發票，可以選擇日期並且長按「手動上傳發票」即可。</p></li></ol>
+<figure class="manual-figure"><div class="figure-media"><img alt="手動上傳發票" class="manual-image single-image" loading="lazy" src="./assets/images/手動上傳發票.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>手動上傳發票</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">手動上傳發票.png</code></div><button aria-label="放大查看：維護發票資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+</details></div>
+</details></div>
+<!-- =============== 【搜尋結果與頁尾】 =============== -->
+<div class="no-results" hidden="" id="noResults">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-search">
+</use>
+</svg>
+<h2>
+      找不到符合的章節
+     </h2>
+<p>
+      請試試其他關鍵字，或清除搜尋以查看完整手冊。
+     </p>
+<button class="control-button" id="clearSearch" type="button">
+      清除搜尋
+     </button>
+</div>
+<footer class="page-footer"><strong>iMateGo</strong><span>行動發票點餐系統說明手冊</span><p>2026年08月11日　V1.0版</p></footer>
+</main>
+</div>
+<button aria-label="回到頁首" class="back-to-top" id="backToTop" type="button">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-arrow-up">
+</use>
+</svg>
+</button>
+<dialog aria-label="操作圖片放大檢視" class="image-dialog" id="imageDialog">
+<div class="dialog-top">
+<span id="imageDialogTitle">
+</span>
+<button aria-label="關閉圖片" class="dialog-close" id="closeDialog" type="button">
+<svg aria-hidden="true" class="icon">
+<use href="#icon-x">
+</use>
+</svg>
+</button>
+</div>
+<img alt="" id="dialogImage"/>
+<p>
+    點擊圖片外側，或按 Esc 關閉
+   </p>
+</dialog>
+<!-- =========================================================
+  【互動功能】下方 JavaScript 包含搜尋、全部收合、圖片放大、列印及手機目錄。
+  平常要改文字或加圖片，不需要修改這一區。
+  已把原本 assets/js/app.js 完整放進來，不必再建立 JS 檔。
+========================================================== -->
+<script id="imatego-features">
+   (() => {
+  const chapters = [...document.querySelectorAll('.chapter')];
+  const allDetails = [...document.querySelectorAll('details')];
+  const searchInput = document.getElementById('manualSearch');
+  const searchStatus = document.getElementById('searchStatus');
+  const noResults = document.getElementById('noResults');
+  const sidebar = document.getElementById('tocSidebar');
+  const tocContainer = sidebar.querySelector('.sidebar-chapters');
+  const backdrop = document.getElementById('mobileBackdrop');
+  const menuButton = document.getElementById('openToc');
+  const backToTop = document.getElementById('backToTop');
+  const lightbox = document.getElementById('imageDialog');
+  const lightboxImage = document.getElementById('dialogImage');
+  const lightboxTitle = document.getElementById('imageDialogTitle');
+  let stateBeforeSearch = null;
+  let tocLinks = [];
+
+  function buildToc() {
+    tocContainer.innerHTML = '';
+
+    chapters.forEach((chapter, index) => {
+      const group = document.createElement('div');
+      group.className = 'toc-group';
+
+      const chapterTitle = chapter.querySelector('.chapter-title')?.textContent.trim() || chapter.dataset.chapter || `章節 ${index + 1}`;
+      const chapterLink = document.createElement('a');
+      chapterLink.className = 'toc-link';
+      chapterLink.href = `#${chapter.id}`;
+      chapterLink.dataset.target = chapter.id;
+      chapterLink.innerHTML = `<span class="toc-no">${String(index + 1).padStart(2, '0')}</span><span>${chapterTitle}</span>`;
+      group.appendChild(chapterLink);
+
+      const subchapters = [...chapter.querySelectorAll('.subchapter[id]')];
+      if (subchapters.length) {
+        const subList = document.createElement('div');
+        subList.className = 'toc-subchapters';
+
+        subchapters.forEach(subchapter => {
+          const title = subchapter.querySelector('.subchapter-title')?.textContent.trim() || subchapter.id;
+          const subLink = document.createElement('a');
+          subLink.className = 'toc-sublink';
+          subLink.href = `#${subchapter.id}`;
+          subLink.dataset.target = subchapter.id;
+          subLink.dataset.chapter = chapter.id;
+          subLink.textContent = title;
+          subList.appendChild(subLink);
+        });
+
+        group.appendChild(subList);
+      }
+
+      tocContainer.appendChild(group);
+    });
+
+    tocLinks = [...tocContainer.querySelectorAll('[data-target]')];
+    tocLinks.forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        const id = link.dataset.target;
+        // 側欄導覽永遠可用：點選章節時解除目前搜尋篩選。
+        if (searchInput.value.trim()) {
+          searchInput.value = '';
+          filterChapters('');
+        }
+        history.replaceState(null, '', `#${id}`);
+        setSidebar(false);
+        openAnchor(id);
+      });
+    });
+  }
+
+  function setSidebar(open) {
+    sidebar.classList.toggle('is-open', open);
+    backdrop.hidden = !open;
+    menuButton.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  function openAnchor(id, smooth = true) {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    if (target.closest('.chapter')?.hidden) {
+      searchInput.value = '';
+      filterChapters('');
+    }
+
+    let parent = target;
+    while (parent) {
+      if (parent.tagName === 'DETAILS') parent.open = true;
+      parent = parent.parentElement;
+    }
+
+    target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    setActiveToc(target.id);
+  }
+
+  function setActiveToc(targetId) {
+    const target = document.getElementById(targetId);
+    const activeChapterId = target?.closest('.chapter')?.id || targetId;
+
+    tocLinks.forEach(link => {
+      const isExact = link.dataset.target === targetId;
+      const isParent = link.classList.contains('toc-link') && link.dataset.target === activeChapterId;
+      link.classList.toggle('is-active', isExact || (targetId === activeChapterId && isParent));
+      link.classList.toggle('is-parent-active', isParent);
+    });
+
+    const activeLink = tocLinks.find(link => link.dataset.target === targetId)
+      || tocLinks.find(link => link.dataset.target === activeChapterId);
+
+    if (activeLink) ensureTocItemVisible(activeLink);
+  }
+
+  function ensureTocItemVisible(link) {
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    const padding = 34;
+
+    if (linkRect.top < sidebarRect.top + padding) {
+      sidebar.scrollTop -= (sidebarRect.top + padding - linkRect.top);
+    } else if (linkRect.bottom > sidebarRect.bottom - padding) {
+      sidebar.scrollTop += (linkRect.bottom - (sidebarRect.bottom - padding));
+    }
+  }
+
+  function snapshotDetails() {
+    return new Map(allDetails.map(node => [node, node.open]));
+  }
+
+  function restoreDetails(saved) {
+    if (saved) saved.forEach((open, node) => { node.open = open; });
+  }
+
+  function normalise(value) {
+    return (value || '').normalize('NFKC').toLocaleLowerCase('zh-Hant').trim();
+  }
+
+  function filterChapters(value) {
+    const keyword = normalise(value);
+    if (keyword && stateBeforeSearch === null) stateBeforeSearch = snapshotDetails();
+    let visible = 0;
+
+    chapters.forEach(chapter => {
+      const subsections = [...chapter.querySelectorAll('.subchapter')];
+      const chapterTitle = normalise(chapter.querySelector('.chapter-title')?.textContent);
+      const chapterIntro = normalise(chapter.querySelector('.chapter-intro')?.textContent);
+      const matchedWholeChapter = chapterTitle.includes(keyword) || chapterIntro.includes(keyword);
+      let matchedSubsections = 0;
+
+      subsections.forEach(section => {
+        const matched = !keyword || matchedWholeChapter || normalise(section.textContent).includes(keyword);
+        section.hidden = !matched;
+        if (matched) {
+          matchedSubsections++;
+          if (keyword) section.open = true;
+        }
+      });
+
+      const matches = !keyword || matchedWholeChapter || matchedSubsections > 0;
+      chapter.hidden = !matches;
+      if (matches) {
+        visible++;
+        if (keyword) chapter.open = true;
+      }
+
+      // 搜尋只篩選右側手冊內容；左側目錄一律保持原樣，供使用者快速跳轉。
+    });
+
+    if (!keyword && stateBeforeSearch !== null) {
+      restoreDetails(stateBeforeSearch);
+      stateBeforeSearch = null;
+    }
+
+    searchStatus.textContent = keyword ? `符合 ${visible} 個章節` : `共 ${chapters.length} 個章節`;
+    noResults.hidden = visible !== 0;
+  }
+
+  function updateScrollSpy() {
+    if (searchInput.value.trim()) return;
+
+    const offset = 130;
+    const headings = [];
+    chapters.forEach(chapter => {
+      headings.push(chapter);
+      chapter.querySelectorAll('.subchapter[id]').forEach(sub => headings.push(sub));
+    });
+
+    let current = headings[0];
+    for (const heading of headings) {
+      if (heading.hidden || heading.closest('.chapter')?.hidden) continue;
+      const top = heading.getBoundingClientRect().top;
+      if (top <= offset) current = heading;
+      else break;
+    }
+
+    if (current) setActiveToc(current.id);
+    backToTop.classList.toggle('is-visible', window.scrollY > 550);
+  }
+
+  buildToc();
+
+  document.getElementById('expandAll').addEventListener('click', () => {
+    allDetails.forEach(details => { details.open = true; });
+  });
+
+  document.getElementById('collapseAll').addEventListener('click', () => {
+    allDetails.forEach(details => { details.open = false; });
+  });
+
+  menuButton.addEventListener('click', () => setSidebar(true));
+  document.getElementById('closeToc').addEventListener('click', () => setSidebar(false));
+  backdrop.addEventListener('click', () => setSidebar(false));
+
+  window.addEventListener('hashchange', () => openAnchor(decodeURIComponent(location.hash.slice(1))));
+  if (location.hash) {
+    requestAnimationFrame(() => openAnchor(decodeURIComponent(location.hash.slice(1)), false));
+  }
+
+  searchInput.addEventListener('input', event => filterChapters(event.target.value));
+  document.getElementById('clearSearch').addEventListener('click', () => {
+    searchInput.value = '';
+    filterChapters('');
+    searchInput.focus();
+  });
+
+  document.addEventListener('keydown', event => {
+    const typing = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName) || document.activeElement?.isContentEditable;
+    if (event.key === '/' && !typing && !event.ctrlKey && !event.metaKey) {
+      event.preventDefault();
+      searchInput.focus();
+    }
+    if (event.key === 'Escape') setSidebar(false);
+  });
+
+  document.querySelectorAll('.manual-figure').forEach(figure => {
+    const img = figure.querySelector('.manual-image');
+    const frame = figure.querySelector('.figure-media');
+    const zoom = figure.querySelector('.zoom-button');
+    const title = figure.querySelector('figcaption')?.childNodes[0]?.textContent?.trim() || img.alt;
+
+    const markLoaded = () => {
+      if (!img.naturalWidth) return;
+      frame.classList.remove('is-empty');
+      zoom.disabled = false;
+    };
+
+    const markMissing = () => {
+      frame.classList.add('is-empty');
+      zoom.disabled = true;
+    };
+
+    img.addEventListener('load', markLoaded);
+    img.addEventListener('error', markMissing);
+    if (img.complete) (img.naturalWidth > 0 ? markLoaded : markMissing)();
+
+    const openImage = () => {
+      if (!img.naturalWidth) return;
+      lightboxImage.src = img.currentSrc || img.src;
+      lightboxImage.alt = img.alt;
+      lightboxTitle.textContent = title;
+
+      if (typeof lightbox.showModal === 'function') lightbox.showModal();
+      else window.open(img.src, '_blank', 'noopener');
+    };
+
+    zoom.addEventListener('click', openImage);
+    img.addEventListener('click', openImage);
+  });
+
+  document.getElementById('closeDialog').addEventListener('click', () => lightbox.close());
+  lightbox.addEventListener('click', event => {
+    if (event.target === lightbox) lightbox.close();
+  });
+
+  window.addEventListener('scroll', updateScrollSpy, { passive: true });
+  window.addEventListener('resize', updateScrollSpy);
+  updateScrollSpy();
+
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  // 手冊內部連結：自動展開目標章節並平滑移動
+document.querySelectorAll('a.manual-link[href^="#"]').forEach(link => {
+  link.addEventListener('click', event => {
+    const id = link.getAttribute('href').substring(1);
+    const target = document.getElementById(id);
+
+    if (!target) return;
+
+    event.preventDefault();
+
+    // 展開目標本身
+    if (target.tagName === 'DETAILS') {
+      target.open = true;
+    }
+
+    // 展開所有上層 details
+    let parent = target.parentElement;
+
+    while (parent) {
+      if (parent.tagName === 'DETAILS') {
+        parent.open = true;
+      }
+
+      parent = parent.parentElement;
+    }
+
+    target.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+
+    history.replaceState(null, '', `#${id}`);
+  });
+});
+})();
+  </script>
+</body>
+</html>
