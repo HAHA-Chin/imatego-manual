@@ -88,7 +88,7 @@ svg.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;s
 .control-button{background:white;border:1px solid #ead7ca;border-radius:9px;color:#78685e;font-size:12px;padding:7px 13px;min-height:34px;font-weight:650;transition:all .15s}
 .chapters{display:flex;flex-direction:column;gap:15px}
 .chapter{border:1px solid #ecd6c9;border-radius:17px;background:var(--surface);box-shadow:var(--shadow);min-width:0;overflow:hidden;scroll-margin-top:calc(var(--header-h) + 22px)}
-.chapter[open]{border-color:#ebd5c6}
+.chapter.is-open{border-color:#ebd5c6}
 .chapter-heading{list-style:none;display:flex;align-items:center;gap:16px;min-height:82px;padding:20px 27px;user-select:none;cursor:pointer}
 summary::-webkit-details-marker{display:none}
 .chapter-heading::marker,.subchapter-heading::marker{content:""}
@@ -102,7 +102,7 @@ summary::-webkit-details-marker{display:none}
 .chapter-meta{font:500 11px Arial,sans-serif;letter-spacing:2px;white-space:nowrap;color:#6b5750;margin-left:auto}
 .chapter-chevron{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;color:#675c56;flex-shrink:0;margin-left:8px}
 .chapter-chevron .icon{width:15px;height:15px;transition:transform .2s}
-.chapter[open]>.chapter-heading .chapter-chevron .icon{transform:rotate(180deg)}
+.chapter.is-open>.chapter-heading .chapter-chevron .icon{transform:rotate(180deg)}
 .chapter-content{padding:0 28px 31px;animation:reveal .22s ease-out}
 @keyframes reveal{from{opacity:.75;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
 .chapter-intro{font-size:14px;color:#544941;margin:3px 0 24px;line-height:1.9}
@@ -113,7 +113,7 @@ summary::-webkit-details-marker{display:none}
 .subchapter-title{font-size:19px;letter-spacing:.01em;font-weight:800;line-height:1.6;flex:1}
 .subchapter-chevron{display:grid;place-items:center;flex-shrink:0;height:28px;width:28px;border:1px solid var(--line-soft);border-radius:50%;color:#937c6e}
 .subchapter-chevron .icon{width:14px;height:14px;transition:transform .2s}
-.subchapter[open]>.subchapter-heading .subchapter-chevron .icon{transform:rotate(180deg)}
+.subchapter.is-open>.subchapter-heading .subchapter-chevron .icon{transform:rotate(180deg)}
 .subchapter-content{padding:0 0 9px 18px;animation:reveal .2s ease-out}
 .section-lead{margin:0 0 16px;color:#61564e;font-size:14px}
 .step-list{list-style:none;padding:0;margin:20px 0 20px;display:flex;flex-direction:column;gap:13px}
@@ -476,6 +476,36 @@ summary::-webkit-details-marker{display:none}
     height:auto;
   }
 }
+
+/* ===== iOS / LINE 內建瀏覽器穩定版手風琴 =====
+   不使用原生 <details>，避免 WebKit 展開後內容不繪製的問題。 */
+.chapter-heading,
+.subchapter-heading{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:inherit;
+  text-align:left;
+  font:inherit;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.chapter > .chapter-content,
+.subchapter > .subchapter-content{
+  display:none;
+}
+.chapter.is-open > .chapter-content,
+.subchapter.is-open > .subchapter-content{
+  display:block;
+}
+/* 避免 iOS WebView 在 display 切換時因動畫留下舊的繪製狀態 */
+.chapter-content,
+.subchapter-content{
+  animation:none !important;
+  opacity:1 !important;
+  transform:none !important;
+}
+
 </style>
 </head>
 <body>
@@ -668,8 +698,8 @@ summary::-webkit-details-marker{display:none}
      變更圖片：修改 &lt;img src="./assets/images/檔名.png"&gt;，再放入對應檔案。
      請勿移除章節 &lt;details&gt; 或 &lt;summary&gt;，它們是原生收合功能。
 ================================================================== -->
-<div class="chapters" id="manualChapters"><details class="chapter" data-chapter="發票字軌取號" id="invoice-number" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">壹</span><span class="chapter-dot">·</span><span class="chapter-title">發票字軌取號</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<div class="chapters" id="manualChapters"><section class="chapter is-open" data-chapter="發票字軌取號" id="invoice-number">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">壹</span><span class="chapter-dot">·</span><span class="chapter-title">發票字軌取號</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="chapter-content">
 <div class="subchapter-content">
 <ol class="step-list">
@@ -677,11 +707,11 @@ summary::-webkit-details-marker{display:none}
 <li><span class="step-number">2</span><p>點選『配號資訊』會顯示當期的發票配號資訊（圖中紅色方框）。</p></li>
 </ol>
 <aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p>※※組數越多等候時間越久，非系統當機請耐心等候※※</p></aside>
-<figure class="manual-figure"><div class="figure-media"><img alt="發票字軌取號" class="manual-image" loading="lazy" src="./assets/images/發票字軌取號.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">發票字軌取號.png</code></div><button aria-label="放大查看：發票字軌取號" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+<figure class="manual-figure"><div class="figure-media"><img alt="發票字軌取號" class="manual-image" loading="eager" src="./assets/images/發票字軌取號.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">發票字軌取號.png</code></div><button aria-label="放大查看：發票字軌取號" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
 </div>
-</details>
-<details class="chapter" data-chapter="匯入商品資料" id="products" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">貳</span><span class="chapter-dot">·</span><span class="chapter-title">匯入商品資料</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section>
+<section class="chapter is-open" data-chapter="匯入商品資料" id="products">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">貳</span><span class="chapter-dot">·</span><span class="chapter-title">匯入商品資料</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="chapter-content">
 <ol class="step-list">
 <li><span class="step-number">1</span><p>進到營運管理平台(<a class="manual-link" href="https://omp.imate.pro/login" rel="noopener noreferrer" target="_blank">
@@ -693,36 +723,36 @@ summary::-webkit-details-marker{display:none}
 <li><span class="step-number">5</span><p>回到POS機，將POS機結束程式再重新開啟程式，商品會自動同步。</p></li>
 </ol>
 <aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p>※※如需更新商品就點擊右上角『下載目前商品』(橘色框框)去做修改，完畢後再將修改後的檔案重新導入※※</p></aside>
-<figure class="manual-figure"><div class="figure-media"><img alt="匯入商品資料" class="manual-image" loading="lazy" src="./assets/images/匯入商品.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">02-download-template.png</code></div><button aria-label="放大查看：匯入商品資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details>
-<details class="chapter" data-chapter="快速開發票" id="quick-checkout" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">參</span><span class="chapter-dot">·</span><span class="chapter-title">快速開發票</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><details class="subchapter" id="normal-checkout" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)一般商品結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<figure class="manual-figure"><div class="figure-media"><img alt="匯入商品資料" class="manual-image" loading="eager" src="./assets/images/匯入商品.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">02-download-template.png</code></div><button aria-label="放大查看：匯入商品資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section>
+<section class="chapter is-open" data-chapter="快速開發票" id="quick-checkout">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">參</span><span class="chapter-dot">·</span><span class="chapter-title">快速開發票</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><section class="subchapter is-open" id="normal-checkout">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)一般商品結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><ol class="step-list">
 <li><span class="step-number">1</span><p>藍色箭頭為<span style="color:#1b4dd7;">商品分類</span>，滑動進行點選。</p></li>
 <li><span class="step-number">2</span><p><span style="color:#ee1111;">商品</span>可上下滑動，選擇商品後，點選備註。</p></li>
 <li><span class="step-number">3</span><p>商品確認無誤點擊『結帳』即可。</p></li>
-</ol><figure class="manual-figure"><div class="figure-media"><img alt="一般商品結帳" class="manual-image" loading="lazy" src="./assets/images/快速開發票(一般).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">06-product-checkout.png</code></div><button aria-label="放大查看：一般商品結帳" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details><details class="subchapter" id="price-first" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)價格優先結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</ol><figure class="manual-figure"><div class="figure-media"><img alt="一般商品結帳" class="manual-image" loading="eager" src="./assets/images/快速開發票(一般).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">06-product-checkout.png</code></div><button aria-label="放大查看：一般商品結帳" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section><section class="subchapter is-open" id="price-first">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)價格優先結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><ol class="step-list">
 <li><span class="step-number">1</span><p>先點數字鍵輸入金額，再點選商品。</p></li>
 <li><span class="step-number">2</span><p>點選「結帳」即完成作業。</p></li>
-</ol><figure class="manual-figure"><div class="figure-media"><img alt="價格優先結帳" class="manual-image" loading="lazy" src="./assets/images/快速開發票(價格).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">07-price-first.png</code></div><button aria-label="放大查看：價格優先結帳" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</ol><figure class="manual-figure"><div class="figure-media"><img alt="價格優先結帳" class="manual-image" loading="eager" src="./assets/images/快速開發票(價格).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">07-price-first.png</code></div><button aria-label="放大查看：價格優先結帳" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
 <aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p>＊預設為「價格優先」，如需改為「數量優先」請至「基本設定」中修改。</p></aside>
-</details><details class="subchapter" id="custom-item-checkout" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)自訂義商品結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section><section class="subchapter is-open" id="custom-item-checkout">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)自訂義商品結帳</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><ol class="step-list">
 <li><span class="step-number">1</span><p>點選商品觸發模式可以選擇要數量優先還是價格優先，而自定義商品是<a href="#basic-settings" class="manual-link">『價格優先』</a>。</p></li>
 <li><span class="step-number">2</span><p>只需在主畫面輸入數字，直接著按「結帳」就可以直接開出自訂義商品的發票。</p></li>
 </ol></div>
-</details></div>
-</details>
-<details class="chapter" data-chapter="銷售前台功能" id="pos-functions" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">肆</span><span class="chapter-dot">·</span><span class="chapter-title">銷售前台功能</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><details class="subchapter" id="item-editing" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)商品鍵入及修改、折扣</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section></div>
+</section>
+<section class="chapter is-open" data-chapter="銷售前台功能" id="pos-functions">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">肆</span><span class="chapter-dot">·</span><span class="chapter-title">銷售前台功能</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><section class="subchapter is-open" id="item-editing">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)商品鍵入及修改、折扣</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content">
 <ol class="step-list step-list-heading"><li><span class="step-number">1</span><p>點選畫面鍵入 :</p></li></ol>
 <div class="document-text"><p class="nested-step">1. 選擇類別、商品、以及點選加購/註記 。</p><p class="nested-step">2. 鍵入後商品會出現在右半部，並且會出現商品的加購/註記 。</p><p class="nested-step">3. 商品確認無誤後按『結帳』即可。</p></div>
@@ -733,7 +763,7 @@ summary::-webkit-details-marker{display:none}
       class="manual-image"
       src="./assets/images/商品註記.png"
       alt="商品註記"
-      loading="lazy"
+      loading="eager"
     />
 
     <button
@@ -763,7 +793,7 @@ summary::-webkit-details-marker{display:none}
       class="manual-image"
       src="./assets/images/修改商品1.png"
       alt="修改商品"
-      loading="lazy"
+      loading="eager"
     />
     <button
       class="zoom-button"
@@ -785,7 +815,7 @@ summary::-webkit-details-marker{display:none}
       class="manual-image"
       src="./assets/images/修改商品2.png"
       alt="修改商品"
-      loading="lazy"
+      loading="eager"
     />
 
     <button
@@ -809,7 +839,7 @@ summary::-webkit-details-marker{display:none}
       class="manual-image"
       src="./assets/images/折扣設定.png"
       alt="折扣設定"
-      loading="lazy"
+      loading="eager"
     />
 
     <button
@@ -827,12 +857,12 @@ summary::-webkit-details-marker{display:none}
 </figure>
 <aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><p>＊預設為「金額折扣($)」，如需改為「百分比折扣(%)」，請至「基本設定」中的整單折扣修改。</p></aside>
 <p class="section-lead main-screen-title">＊主畫面說明</p>
-<figure class="manual-figure"><div class="figure-media"><img alt="主畫面說明" class="manual-image" loading="lazy" src="./assets/images/主畫面說明.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">08-add-edit-items.png</code></div><button aria-label="放大查看：主畫面說明" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details>
+<figure class="manual-figure"><div class="figure-media"><img alt="主畫面說明" class="manual-image" loading="eager" src="./assets/images/主畫面說明.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">08-add-edit-items.png</code></div><button aria-label="放大查看：主畫面說明" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section>
 
 <!-- （二）發票設定 -->
-<details class="subchapter" id="invoice-options" open="">
-  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)發票設定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<section class="subchapter is-open" id="invoice-options">
+  <button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)發票設定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
   <div class="subchapter-content">
     <div class="document-text">
       <ol class="step-list">
@@ -840,13 +870,13 @@ summary::-webkit-details-marker{display:none}
         <li><span class="step-number">2</span><p>選擇要輸入的設定點開，並且輸入數字或點視窗中<img src="./assets/images/搜尋.png" class="inline-icon" alt="搜尋圖示">圖示，完成後就會出現以下樣式。</p></li>
       </ol>
     </div>
-    <figure class="manual-figure"><div class="figure-media"><img alt="發票設定" class="manual-image" loading="lazy" src="./assets/images/發票設定.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">10-invoice-options.png</code></div><button aria-label="放大查看：發票設定" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+    <figure class="manual-figure"><div class="figure-media"><img alt="發票設定" class="manual-image" loading="eager" src="./assets/images/發票設定.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">10-invoice-options.png</code></div><button aria-label="放大查看：發票設定" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
   </div>
-</details>
+</section>
 
 <!-- （三）多元支付 -->
-<details class="subchapter" id="payment-methods" open="">
-  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)多元支付</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<section class="subchapter is-open" id="payment-methods">
+  <button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)多元支付</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
   <div class="subchapter-content">
     <div class="document-text">
       <ol class="step-list">
@@ -855,26 +885,26 @@ summary::-webkit-details-marker{display:none}
         <li><span class="step-number">3</span><p>操作完扣到款後會主動結帳印發票。</p></li>
       </ol>
     </div>
-    <figure class="manual-figure"><div class="figure-media"><img alt="多元支付" class="manual-image" loading="lazy" src="./assets/images/多元支付.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：多元支付" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+    <figure class="manual-figure"><div class="figure-media"><img alt="多元支付" class="manual-image" loading="eager" src="./assets/images/多元支付.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：多元支付" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
   </div>
-</details>
+</section>
 
 <!-- （四）暫存掛單及載入掛單 -->
-<details class="subchapter" id="hold-order" open="">
-  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(四)暫存掛單及載入掛單</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<section class="subchapter is-open" id="hold-order">
+  <button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(四)暫存掛單及載入掛單</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
   <div class="subchapter-content">
     <div class="document-text">
       <ol class="step-list">
         <li><span class="step-number">1</span><p>如有單需稍後再付款可以點選功能列中的「暫存掛單」，商品會儲存到內；要付款時在點擊「載入掛單」就可以選擇要結帳的單。</p></li>
       </ol>
     </div>
-    <figure class="manual-figure"><div class="figure-media"><img alt="暫存掛單及載入掛單" class="manual-image" loading="lazy" src="./assets/images/暫存掛單.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：暫存掛單" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+    <figure class="manual-figure"><div class="figure-media"><img alt="暫存掛單及載入掛單" class="manual-image" loading="eager" src="./assets/images/暫存掛單.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：暫存掛單" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
   </div>
-</details>
+</section>
 
 <!-- （五）其他支付 -->
-<details class="subchapter" id="other-payment" open="">
-  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(五)其他支付</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<section class="subchapter is-open" id="other-payment">
+  <button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(五)其他支付</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
   <div class="subchapter-content">
     <div class="document-text">
       <ol class="step-list">
@@ -882,13 +912,13 @@ summary::-webkit-details-marker{display:none}
         <li><span class="step-number">2</span><p>請先於下方<span style="color:#ee1111;">紅色框位置</span>的數字鍵輸入金額後，點擊<span style="color:#f15b38;">橘色框</span>『功能』列表中的『其他支付』，選擇支付方式，按下確認結帳即可印出發票。</p></li>
       </ol>
     </div>
-    <figure class="manual-figure"><div class="figure-media"><img alt="其他支付" class="manual-image" loading="lazy" src="./assets/images/其他支付.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：其他支付" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+    <figure class="manual-figure"><div class="figure-media"><img alt="其他支付" class="manual-image" loading="eager" src="./assets/images/其他支付.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">11-payment.png</code></div><button aria-label="放大查看：其他支付" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
   </div>
-</details>
+</section>
 
 <!-- （六）確認「結帳商品」功能 -->
-<details class="subchapter" id="checkout-review" open="">
-  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(六)確認「結帳商品」功能</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<section class="subchapter is-open" id="checkout-review">
+  <button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(六)確認「結帳商品」功能</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
   <div class="subchapter-content">
     <p class="section-lead">在設定好發票後，如不需用多元支付，可使用「結帳商品」功能，核對客人點餐內容，在小視窗「確認結帳」就會直接印發票。</p>
     <div class="document-text">
@@ -897,22 +927,22 @@ summary::-webkit-details-marker{display:none}
         <li><span class="step-number">2</span><p>跟客人核對後，按下「確認結帳」會直接完成結帳，如發票未設定載具/統編/愛心碼者，需先完成設定，如果要使用多元支付者不適合用此功能。</p></li>
       </ol>
     </div>
-    <figure class="manual-figure"><div class="figure-media"><img alt="確認結帳商品功能" class="manual-image" loading="lazy" src="./assets/images/確認結帳功能.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">12-review-checkout.png</code></div><button aria-label="放大查看：確認結帳商品功能" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+    <figure class="manual-figure"><div class="figure-media"><img alt="確認結帳商品功能" class="manual-image" loading="eager" src="./assets/images/確認結帳功能.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">12-review-checkout.png</code></div><button aria-label="放大查看：確認結帳商品功能" class="zoom-button" disabled title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
   </div>
-</details>
+</section>
 </div>
-</details>
+</section>
 
-<details class="chapter" data-chapter="設定說明" id="settings" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">伍</span><span class="chapter-dot">·</span><span class="chapter-title">設定說明</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><details class="subchapter" id="company-settings" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)「公司設定」說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<section class="chapter is-open" data-chapter="設定說明" id="settings">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">伍</span><span class="chapter-dot">·</span><span class="chapter-title">設定說明</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><section class="subchapter is-open" id="company-settings">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)「公司設定」說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><p class="section-lead">此頁的資料大多是雲端設定後，再次按「已完成認證」，可在次同步變更。</p><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>設定發票抬頭：於「發票LOGO」處，鍵入要顯示於發票抬頭的文字，如有上傳圖片者，需於此輸入大寫英文「IMAGE」，即可顯示於抬頭。</p></li></ol></div>
 </div>
-</details>
+</section>
 <!-- （二）基本設定 -->
-<details class="subchapter" id="basic-settings" open="">
-  <summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)「基本設定」功能說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<section class="subchapter is-open" id="basic-settings">
+  <button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)「基本設定」功能說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 
   <div class="subchapter-content">
     <div class="document-text">
@@ -921,7 +951,7 @@ summary::-webkit-details-marker{display:none}
       <ol class="step-list document-step-list">
         <li><span class="step-number">1</span><p>點擊主畫面右上角的三點，選擇『基本設定』。設定說明如下圖。</p></li>
       </ol>
-      <figure class="manual-figure"><div class="figure-media"><img alt="基本設定" class="manual-image" loading="lazy" src="./assets/images/設定說明.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">13-company-settings.png</code></div><button aria-label="放大查看：基本設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+      <figure class="manual-figure"><div class="figure-media"><img alt="基本設定" class="manual-image" loading="eager" src="./assets/images/設定說明.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">13-company-settings.png</code></div><button aria-label="放大查看：基本設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
       <!-- 第二點 -->
       <ol class="step-list document-step-list">
         <li><span class="step-number">2</span><p>發票備註說明：基本設定中「備註」，設定後會顯示在前台，畫面如下圖中的「請輸入發票備註」內容會成為預設，無另外修改就會印出字樣。</p></li>
@@ -932,97 +962,97 @@ summary::-webkit-details-marker{display:none}
     <!-- 原本第二點下方的圖片 -->
     <figure class="manual-figure">
         <div class="figure-media">
-          <img alt="發票備註功能" class="manual-image" loading="lazy" src="./assets/images/發票備註功能.png"/>
+          <img alt="發票備註功能" class="manual-image" loading="eager" src="./assets/images/發票備註功能.png"/>
           <div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">發票備註功能.png</code></div>
           <button aria-label="放大查看：發票備註功能" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button>
         </div>
       </figure>
   </div>
-</details>
-<details class="subchapter" id="printer-settings" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)「出單機設定」說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>「使用本機印表機」：下圖紅色框，開啟時印完發票後會於本機列廚房單。 成功後返回主畫面點選菜單，選擇完畢結帳後會出現提示字，『需先手動將發票撕下』按確認後才會繼續出廚房單。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>「使用廚房印表機」：下圖橘框，可串接其他印表機列印廚房單，最多可串接三台，開啟後，輸入印表機IP、Port(9100)，即可測試連線列印。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>「使用廚房印表機」：下圖紫色框，可串接標籤印表機，列印杯貼，最多可串接三台，開啟後，輸入印表機IP、Port(9100)，即可測試連線列印。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="出單機設定" class="manual-image" loading="lazy" src="./assets/images/廚房單印表機.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">15-printer-settings.png</code></div><button aria-label="放大查看：出單機設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details></div>
-</details>
-<details class="chapter" data-chapter="作廢、補印、作廢註銷" id="invoice-management" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">陸</span><span class="chapter-dot">·</span><span class="chapter-title">作廢、補印、作廢註銷</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><details class="subchapter" id="void-invoice" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)作廢</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點左側選單進入『查詢發票』頁面。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>利用左右箭頭選擇或是搜尋欲退貨的發票後，可以自行選擇要退貨的項目，選擇完畢後後點「作廢」。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>如是部分作廢者，作廢後會主動再印一張，沒有作廢的商品的發票。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="作廢" class="manual-image" loading="lazy" src="./assets/images/作廢.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">16-void-invoice.png</code></div><button aria-label="放大查看：作廢" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details><details class="subchapter" id="reprint-invoice" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)補印</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section>
+<section class="subchapter is-open" id="printer-settings">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)「出單機設定」說明</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>「使用本機印表機」：下圖紅色框，開啟時印完發票後會於本機列廚房單。 成功後返回主畫面點選菜單，選擇完畢結帳後會出現提示字，『需先手動將發票撕下』按確認後才會繼續出廚房單。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>「使用廚房印表機」：下圖橘框，可串接其他印表機列印廚房單，最多可串接三台，開啟後，輸入印表機IP、Port(9100)，即可測試連線列印。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>「使用廚房印表機」：下圖紫色框，可串接標籤印表機，列印杯貼，最多可串接三台，開啟後，輸入印表機IP、Port(9100)，即可測試連線列印。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="出單機設定" class="manual-image" loading="eager" src="./assets/images/廚房單印表機.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">15-printer-settings.png</code></div><button aria-label="放大查看：出單機設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section></div>
+</section>
+<section class="chapter is-open" data-chapter="作廢、補印、作廢註銷" id="invoice-management">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">陸</span><span class="chapter-dot">·</span><span class="chapter-title">作廢、補印、作廢註銷</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><section class="subchapter is-open" id="void-invoice">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)作廢</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點左側選單進入『查詢發票』頁面。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>利用左右箭頭選擇或是搜尋欲退貨的發票後，可以自行選擇要退貨的項目，選擇完畢後後點「作廢」。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>如是部分作廢者，作廢後會主動再印一張，沒有作廢的商品的發票。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="作廢" class="manual-image" loading="eager" src="./assets/images/作廢.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">16-void-invoice.png</code></div><button aria-label="放大查看：作廢" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section><section class="subchapter is-open" id="reprint-invoice">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)補印</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><div class="document-text">
 <ol class="step-list document-step-list"><li><span class="step-number">2</span><p>發票補印出來後，紙本上會顯示此發票為補印，時間也會顯示補印時間。</p></li></ol>
 </div>
-<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><div><p>※ 作廢發票不可補印。</p><p>※ 上方搜尋欄可輸入<strong>完整發票號碼</strong>快速查找發票。</p></div></aside><figure class="manual-figure"><div class="figure-media"><img alt="補印" class="manual-image" loading="lazy" src="./assets/images/補印.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">17-reprint-invoice.png</code></div><button aria-label="放大查看：補印" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details><details class="subchapter" id="reverse-void" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)作廢註銷</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>此功能是將已作廢的發票取消作廢。需於發票作廢後十分鐘才能執行「作廢註銷」的功能。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>先找到要作廢註銷的發票號碼後，按右上角的三個點，會看到作廢註銷，點入後會有提示訊息，接著輸入密碼：當天的西元年減月減日，即完成作廢註銷。（如下圖）</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="作廢註銷" class="manual-image" loading="lazy" src="./assets/images/作廢註銷.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">18-reverse-void.png</code></div><button aria-label="放大查看：作廢註銷" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details></div>
-</details>
-<details class="chapter" data-chapter="報表" id="reports" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">柒</span><span class="chapter-dot">·</span><span class="chapter-title">報表</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><details class="subchapter" id="export-sales" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)匯出銷售紀錄</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>選單進入『發票設定』，點選『上傳銷售紀錄』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>如需下載多日銷售紀錄，也可選擇『開始日期』與『結束日期』再做匯出。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>當次匯出總金額會同步顯示於畫面中，可供對帳用。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="匯出銷售紀錄" class="manual-image" loading="lazy" src="./assets/images/報表.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">19-export-records.png</code></div><button aria-label="放大查看：匯出銷售紀錄" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details><details class="subchapter" id="daily-report" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)列印日結報表</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>左側欄位選單進入『發票設定』，點選『列印日結報表』即可列印出來。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>如需彙整多日銷售報表，也可選擇『開始日期』與『結束日期』再點選『列印日結報表』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>點擊左側欄位的『日結報表』也可以做匯出。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="列印日結報表" class="manual-image" loading="lazy" src="./assets/images/列印日節報表.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">20-daily-report.png</code></div><button aria-label="放大查看：列印日結報表" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details></div>
-</details>
-<details class="chapter" data-chapter="回報系統紀錄" id="system-log" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">捌</span><span class="chapter-dot">·</span><span class="chapter-title">回報系統紀錄</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點擊左上選單後點選『回報系統紀錄』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>或於「發票設定」頁面右上角三個點點，中點選「回報系統紀錄」。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="回報系統紀錄" class="manual-image" loading="lazy" src="./assets/images/回報系統紀錄.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">21-report-logs.png</code></div><button aria-label="放大查看：回報系統紀錄" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details>
-<details class="chapter" data-chapter="軟體更新" id="software-update" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">玖</span><span class="chapter-dot">·</span><span class="chapter-title">軟體更新</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>先點選主畫面右上角的三個點點進入『公司設定』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>進到畫面後點擊右上角的『軟體更新』，接著會陸續跳出提示訊息引導安裝。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>當跳出安全防護時點擊「更多詳情」後會出現「不掃描就安裝」，按此下載。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">4</span><p>完成安裝。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="軟體更新" class="manual-image" loading="lazy" src="./assets/images/軟體更新.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">22-update-app.png</code></div><button aria-label="放大查看：軟體更新" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details>
-<details class="chapter" data-chapter="營運管理平台說明" id="backoffice" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">拾</span><span class="chapter-dot">·</span><span class="chapter-title">營運管理平台說明</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><details class="subchapter" id="account-security" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)密碼修改、忘記密碼、帳號鎖定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+<aside class="note"><svg aria-hidden="true" class="icon"><use href="#icon-info"></use></svg><div><p>※ 作廢發票不可補印。</p><p>※ 上方搜尋欄可輸入<strong>完整發票號碼</strong>快速查找發票。</p></div></aside><figure class="manual-figure"><div class="figure-media"><img alt="補印" class="manual-image" loading="eager" src="./assets/images/補印.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">17-reprint-invoice.png</code></div><button aria-label="放大查看：補印" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section><section class="subchapter is-open" id="reverse-void">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)作廢註銷</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>此功能是將已作廢的發票取消作廢。需於發票作廢後十分鐘才能執行「作廢註銷」的功能。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>先找到要作廢註銷的發票號碼後，按右上角的三個點，會看到作廢註銷，點入後會有提示訊息，接著輸入密碼：當天的西元年減月減日，即完成作廢註銷。（如下圖）</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="作廢註銷" class="manual-image" loading="eager" src="./assets/images/作廢註銷.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">18-reverse-void.png</code></div><button aria-label="放大查看：作廢註銷" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section></div>
+</section>
+<section class="chapter is-open" data-chapter="報表" id="reports">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">柒</span><span class="chapter-dot">·</span><span class="chapter-title">報表</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><section class="subchapter is-open" id="export-sales">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)匯出銷售紀錄</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>選單進入『發票設定』，點選『上傳銷售紀錄』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>如需下載多日銷售紀錄，也可選擇『開始日期』與『結束日期』再做匯出。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>當次匯出總金額會同步顯示於畫面中，可供對帳用。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="匯出銷售紀錄" class="manual-image" loading="eager" src="./assets/images/報表.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">19-export-records.png</code></div><button aria-label="放大查看：匯出銷售紀錄" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section><section class="subchapter is-open" id="daily-report">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)列印日結報表</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>左側欄位選單進入『發票設定』，點選『列印日結報表』即可列印出來。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>如需彙整多日銷售報表，也可選擇『開始日期』與『結束日期』再點選『列印日結報表』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>點擊左側欄位的『日結報表』也可以做匯出。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="列印日結報表" class="manual-image" loading="eager" src="./assets/images/列印日節報表.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">20-daily-report.png</code></div><button aria-label="放大查看：列印日結報表" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section></div>
+</section>
+<section class="chapter is-open" data-chapter="回報系統紀錄" id="system-log">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">捌</span><span class="chapter-dot">·</span><span class="chapter-title">回報系統紀錄</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點擊左上選單後點選『回報系統紀錄』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>或於「發票設定」頁面右上角三個點點，中點選「回報系統紀錄」。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="回報系統紀錄" class="manual-image" loading="eager" src="./assets/images/回報系統紀錄.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">21-report-logs.png</code></div><button aria-label="放大查看：回報系統紀錄" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section>
+<section class="chapter is-open" data-chapter="軟體更新" id="software-update">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">玖</span><span class="chapter-dot">·</span><span class="chapter-title">軟體更新</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>先點選主畫面右上角的三個點點進入『公司設定』。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">2</span><p>進到畫面後點擊右上角的『軟體更新』，接著會陸續跳出提示訊息引導安裝。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">3</span><p>當跳出安全防護時點擊「更多詳情」後會出現「不掃描就安裝」，按此下載。</p></li></ol><ol class="step-list document-step-list"><li><span class="step-number">4</span><p>完成安裝。</p></li></ol></div><figure class="manual-figure"><div class="figure-media"><img alt="軟體更新" class="manual-image" loading="eager" src="./assets/images/軟體更新.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">22-update-app.png</code></div><button aria-label="放大查看：軟體更新" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section>
+<section class="chapter is-open" data-chapter="營運管理平台說明" id="backoffice">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">拾</span><span class="chapter-dot">·</span><span class="chapter-title">營運管理平台說明</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><section class="subchapter is-open" id="account-security">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)密碼修改、忘記密碼、帳號鎖定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><div class="document-text"><p class="nested-step">1. 修改密碼：營運管理平台(<a class="manual-link" href="https://omp.imate.pro/login" target="_blank" rel="noopener noreferrer"> https://omp.imate.pro/login</a>)，第一次登入後請於右上角的<img src="./assets/images/個人資料.png" class="inline-icon" alt="個人資料">「個人資料」中更改密碼，（如下圖）</p>
-<figure class="manual-figure"><div class="figure-media"><img alt="密碼修改、忘記密碼、帳號鎖定" class="manual-image" loading="lazy" src="./assets/images/營運管理(密碼).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">23-account-security.png</code></div><button aria-label="放大查看：密碼修改、忘記密碼、帳號鎖定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+<figure class="manual-figure"><div class="figure-media"><img alt="密碼修改、忘記密碼、帳號鎖定" class="manual-image" loading="eager" src="./assets/images/營運管理(密碼).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">23-account-security.png</code></div><button aria-label="放大查看：密碼修改、忘記密碼、帳號鎖定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
 <p class="nested-step">2. 忘記密碼：如忘記密碼可輸入此帳號綁定的Email收信，修改密碼。</p><p class="nested-step">3.帳號鎖定：密碼輸入錯誤達五次後，帳號即被鎖定，需輸入此帳號綁定的Email，通知解鎖。</p></div>
-</details><details class="subchapter" id="backoffice-products" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)商品管理</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section><section class="subchapter is-open" id="backoffice-products">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)商品管理</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><p class="section-lead">如需修改、新增商品，可用以下兩個方式處理。</p>
 <div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p><a href="#products" class="manual-link">匯入商品</a>：請點選「下載目前商品」的檔案做新增編輯之後，上傳並設定分類及指派。</p></li><li><span class="step-number">2</span><p>手動新增，點選右邊藍色的按鈕，<img src="./assets/images/新增分類.png" class="action-button-image" alt="新增分類">，之後綁定商品、標籤，最後完成分類指派。</p></li></ol>
 <p>＊如是手動鍵入的商品，建議完成新增/修改後，再下載一次「下載目前商品」儲存此檔案備用。</p>
 <div class="section-title-box">如何將商品綁定分類及分類指派</div><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>綁定分類:</p></li></ol><p class="nested-step">1. 在商品分類中找尋要綁定的類別後點擊右側的「綁定商品」。</p><p class="nested-step">2. 跳出畫面後可勾選或查詢欲綁定的商品，選擇完畢後點擊右下角的「確認綁定」即可。</p>
-<figure class="manual-figure"><div class="figure-media"><img alt="綁定分類" class="manual-image" loading="lazy" src="./assets/images/綁定分類.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>綁定分類</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">綁定分類.png</code></div><button aria-label="放大查看：綁定分類" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<figure class="manual-figure"><div class="figure-media"><img alt="綁定分類" class="manual-image" loading="eager" src="./assets/images/綁定分類.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>綁定分類</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">綁定分類.png</code></div><button aria-label="放大查看：綁定分類" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
 <ol class="step-list document-step-list"><li><span class="step-number">2</span><p>分類指派:</p></li></ol><p class="nested-step">1. 在指派設定中先選擇好要綁定的POS機編號。</p><p class="nested-step">2. 勾選要綁定的類別後按「儲存指派」即可。</p>
-<figure class="manual-figure"><div class="figure-media"><img alt="分類指派" class="manual-image" loading="lazy" src="./assets/images/分類指派.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>分類指派</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">分類指派.png</code></div><button aria-label="放大查看：分類指派" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<figure class="manual-figure"><div class="figure-media"><img alt="分類指派" class="manual-image" loading="eager" src="./assets/images/分類指派.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>分類指派</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">分類指派.png</code></div><button aria-label="放大查看：分類指派" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
 <p class="nested-step">3. 排序：「商品分類」「商品清單」「註記標籤」，的頁面中，都有黃色的<img src="./assets/images/排序.png" class="action-button-image" alt="排序">，點選後，直接用游標拖拉要排序的順序即可。</p>
 </div></div>
-</details><details class="subchapter" id="backoffice-reports" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)訂單帳務管理</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="subchapter-content"><p class="section-lead">提供六項報表「營業匯總表」、「商品銷售排行」、「結帳時段統計」、「交易明細統計」、「訂單商品明細」、「營業報表」查詢，可自行選擇日期區間，查詢並匯出報表。</p><figure class="manual-figure"><div class="figure-media"><img alt="訂單帳務管理" class="manual-image" loading="lazy" src="./assets/images/訂單帳務管理.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">訂單帳務管理.png</code></div><button aria-label="放大查看：訂單帳務管理" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
-</details><details class="subchapter" id="shop-settings" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(四)商店功能設定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section><section class="subchapter is-open" id="backoffice-reports">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(三)訂單帳務管理</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="subchapter-content"><p class="section-lead">提供六項報表「營業匯總表」、「商品銷售排行」、「結帳時段統計」、「交易明細統計」、「訂單商品明細」、「營業報表」查詢，可自行選擇日期區間，查詢並匯出報表。</p><figure class="manual-figure"><div class="figure-media"><img alt="訂單帳務管理" class="manual-image" loading="eager" src="./assets/images/訂單帳務管理.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>操作畫面預留區</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">訂單帳務管理.png</code></div><button aria-label="放大查看：訂單帳務管理" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure></div>
+</section><section class="subchapter is-open" id="shop-settings">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(四)商店功能設定</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><p class="section-lead">提供「離線付款方式」以及「自訂品項」，商店清單中找到自己的商店在右側按下設定，預設皆為停用需自行啟用(<span style="color:#ee1111;">紅色框</span>)。「離線付款方式」啟用後即可設定付款方式，按住左側的 ⋮ 圖示可自行調整順序(<span style="color:#1b4dd7;">藍色框</span>) ，請注意如付款方式無需使用關掉即可(<span style="color:#f15b38;">橘色框</span>)，若該<span style="color:#ee1111;"><strong>付款方式已有銷售則無法刪除</strong></span>。「自訂品項」啟用後即可鍵入但只能輸入一樣。兩個設定有更動皆需要關掉程式重啟。</p></div>
-<figure class="manual-figure"><div class="figure-media"><img alt="商店功能設定" class="manual-image" loading="lazy" src="./assets/images/商店功能設定.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>商店功能設定</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">商店功能設定.png</code></div><button aria-label="放大查看：商店功能設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
-<figure class="manual-figure"><div class="figure-media"><img alt="商店功能設定(離線支付)" class="manual-image" loading="lazy" src="./assets/images/商店功能設定(離線支付).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>商店功能設定(離線支付)</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">商店功能設定(離線支付).png</code></div><button aria-label="放大查看：商店功能設定(離線支付)" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<figure class="manual-figure"><div class="figure-media"><img alt="商店功能設定" class="manual-image" loading="eager" src="./assets/images/商店功能設定.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>商店功能設定</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">商店功能設定.png</code></div><button aria-label="放大查看：商店功能設定" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<figure class="manual-figure"><div class="figure-media"><img alt="商店功能設定(離線支付)" class="manual-image" loading="eager" src="./assets/images/商店功能設定(離線支付).png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>商店功能設定(離線支付)</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">商店功能設定(離線支付).png</code></div><button aria-label="放大查看：商店功能設定(離線支付)" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
 
-</details></div>
-</details>
-<details class="chapter" data-chapter="疑難排除" id="troubleshooting" open="">
-<summary class="chapter-heading"><span class="chapter-name"><span class="chapter-han">拾壹</span><span class="chapter-dot">·</span><span class="chapter-title">疑難排除</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
-<div class="chapter-content"><details class="subchapter" id="invoice-maintenance" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)維護發票資料</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section></div>
+</section>
+<section class="chapter is-open" data-chapter="疑難排除" id="troubleshooting">
+<button type="button" class="chapter-heading"><span class="chapter-name"><span class="chapter-han">拾壹</span><span class="chapter-dot">·</span><span class="chapter-title">疑難排除</span></span><span class="chapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
+<div class="chapter-content"><section class="subchapter is-open" id="invoice-maintenance">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(一)維護發票資料</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><p class="section-lead">當發票使用完畢再次取號後回到主畫面依舊是0張發票，但事實上已經取好了，處理此問題時可參考以下作法 :</p>
 <div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>點擊「發票設定」中右上角的三個點點，點選「維護發票資料」，它會處理最近一次的問題排除，點擊後就可以正常開立發票了。</p></li><li><span class="step-number">2</span><p>將頁面整個滑掉在重新開啟一次重新整理頁面，也可以正常開立發票。</p></li></ol></div>
 
-<figure class="manual-figure"><div class="figure-media"><img alt="維護發票資料" class="manual-image" loading="lazy" src="./assets/images/維護發票資料.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>維護發票資料</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">維護發票資料.png</code></div><button aria-label="放大查看：維護發票資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<figure class="manual-figure"><div class="figure-media"><img alt="維護發票資料" class="manual-image" loading="eager" src="./assets/images/維護發票資料.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>維護發票資料</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">維護發票資料.png</code></div><button aria-label="放大查看：維護發票資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
 </div>
-</details><details class="subchapter" id="manual-upload" open="">
-<summary class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)手動上傳發票</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></summary>
+</section><section class="subchapter is-open" id="manual-upload">
+<button type="button" class="subchapter-heading"><span aria-hidden="true" class="subchapter-marker"></span><span class="subchapter-title">(二)手動上傳發票</span><span class="subchapter-chevron"><svg aria-hidden="true" class="icon"><use href="#icon-chevron"></use></svg></span></button>
 <div class="subchapter-content"><div class="document-text"><ol class="step-list document-step-list"><li><span class="step-number">1</span><p>如果在沒有網路的情況下開立發票是無法自動上傳發票的，需等連接網路時到發票設定中點擊「手動上傳發票」，將發票上傳至票中心。</p></li><li><span class="step-number">2</span><p>如果需要上傳有區間段的發票，可以選擇日期並且長按「手動上傳發票」即可。</p></li></ol></div>
-<figure class="manual-figure"><div class="figure-media"><img alt="手動上傳發票" class="manual-image single-image" loading="lazy" src="./assets/images/手動上傳發票.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>手動上傳發票</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">手動上傳發票.png</code></div><button aria-label="放大查看：維護發票資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
+<figure class="manual-figure"><div class="figure-media"><img alt="手動上傳發票" class="manual-image single-image" loading="eager" src="./assets/images/手動上傳發票.png"/><div class="image-empty"><svg aria-hidden="true" class="image-empty-icon"><use href="#icon-image"></use></svg><strong>手動上傳發票</strong><span>將圖片放入 <code>assets/images/</code></span><code class="filename">手動上傳發票.png</code></div><button aria-label="放大查看：維護發票資料" class="zoom-button" disabled="" title="放大圖片" type="button"><svg aria-hidden="true" class="icon"><use href="#icon-zoom"></use></svg></button></div></figure>
 </div>
-</details></div>
-</details></div>
+</section></div>
+</section></div>
 <!-- =============== 【搜尋結果與頁尾】 =============== -->
 <div class="no-results" hidden="" id="noResults">
 <svg aria-hidden="true" class="icon">
@@ -1070,9 +1100,9 @@ summary::-webkit-details-marker{display:none}
   已把原本 assets/js/app.js 完整放進來，不必再建立 JS 檔。
 ========================================================== -->
 <script id="imatego-features">
-   (() => {
+(() => {
   const chapters = [...document.querySelectorAll('.chapter')];
-  const allDetails = [...document.querySelectorAll('details')];
+  const allSections = [...document.querySelectorAll('.chapter, .subchapter')];
   const searchInput = document.getElementById('manualSearch');
   const searchStatus = document.getElementById('searchStatus');
   const noResults = document.getElementById('noResults');
@@ -1086,6 +1116,35 @@ summary::-webkit-details-marker{display:none}
   const lightboxTitle = document.getElementById('imageDialogTitle');
   let stateBeforeSearch = null;
   let tocLinks = [];
+
+  function setOpen(node, open) {
+    if (!node) return;
+    node.classList.toggle('is-open', open);
+    const heading = node.querySelector(':scope > .chapter-heading, :scope > .subchapter-heading');
+    if (heading) heading.setAttribute('aria-expanded', String(open));
+
+    // iOS/WKWebView：展開後強制一次同步 layout + 下一幀 repaint。
+    if (open) {
+      void node.offsetHeight;
+      requestAnimationFrame(() => {
+        node.style.webkitTransform = 'translateZ(0)';
+        requestAnimationFrame(() => {
+          node.style.webkitTransform = '';
+        });
+      });
+    }
+  }
+
+  // 初始化 ARIA 狀態。
+  allSections.forEach(node => setOpen(node, node.classList.contains('is-open')));
+
+  // 自訂手風琴：完全不依賴原生 <details>。
+  document.querySelectorAll('.chapter-heading, .subchapter-heading').forEach(heading => {
+    heading.addEventListener('click', () => {
+      const node = heading.closest('.chapter, .subchapter');
+      setOpen(node, !node.classList.contains('is-open'));
+    });
+  });
 
   function buildToc() {
     tocContainer.innerHTML = '';
@@ -1129,7 +1188,6 @@ summary::-webkit-details-marker{display:none}
       link.addEventListener('click', event => {
         event.preventDefault();
         const id = link.dataset.target;
-        // 側欄導覽永遠可用：點選章節時解除目前搜尋篩選。
         if (searchInput.value.trim()) {
           searchInput.value = '';
           filterChapters('');
@@ -1157,14 +1215,19 @@ summary::-webkit-details-marker{display:none}
       filterChapters('');
     }
 
-    let parent = target;
-    while (parent) {
-      if (parent.tagName === 'DETAILS') parent.open = true;
-      parent = parent.parentElement;
+    // 展開目標與所有上層章節。
+    let current = target;
+    while (current) {
+      if (current.classList?.contains('chapter') || current.classList?.contains('subchapter')) {
+        setOpen(current, true);
+      }
+      current = current.parentElement;
     }
 
-    target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
-    setActiveToc(target.id);
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+      setActiveToc(target.id);
+    });
   }
 
   function setActiveToc(targetId) {
@@ -1196,12 +1259,12 @@ summary::-webkit-details-marker{display:none}
     }
   }
 
-  function snapshotDetails() {
-    return new Map(allDetails.map(node => [node, node.open]));
+  function snapshotSections() {
+    return new Map(allSections.map(node => [node, node.classList.contains('is-open')]));
   }
 
-  function restoreDetails(saved) {
-    if (saved) saved.forEach((open, node) => { node.open = open; });
+  function restoreSections(saved) {
+    if (saved) saved.forEach((open, node) => setOpen(node, open));
   }
 
   function normalise(value) {
@@ -1210,7 +1273,7 @@ summary::-webkit-details-marker{display:none}
 
   function filterChapters(value) {
     const keyword = normalise(value);
-    if (keyword && stateBeforeSearch === null) stateBeforeSearch = snapshotDetails();
+    if (keyword && stateBeforeSearch === null) stateBeforeSearch = snapshotSections();
     let visible = 0;
 
     chapters.forEach(chapter => {
@@ -1225,7 +1288,7 @@ summary::-webkit-details-marker{display:none}
         section.hidden = !matched;
         if (matched) {
           matchedSubsections++;
-          if (keyword) section.open = true;
+          if (keyword) setOpen(section, true);
         }
       });
 
@@ -1233,14 +1296,12 @@ summary::-webkit-details-marker{display:none}
       chapter.hidden = !matches;
       if (matches) {
         visible++;
-        if (keyword) chapter.open = true;
+        if (keyword) setOpen(chapter, true);
       }
-
-      // 搜尋只篩選右側手冊內容；左側目錄一律保持原樣，供使用者快速跳轉。
     });
 
     if (!keyword && stateBeforeSearch !== null) {
-      restoreDetails(stateBeforeSearch);
+      restoreSections(stateBeforeSearch);
       stateBeforeSearch = null;
     }
 
@@ -1273,11 +1334,11 @@ summary::-webkit-details-marker{display:none}
   buildToc();
 
   document.getElementById('expandAll').addEventListener('click', () => {
-    allDetails.forEach(details => { details.open = true; });
+    allSections.forEach(node => setOpen(node, true));
   });
 
   document.getElementById('collapseAll').addEventListener('click', () => {
-    allDetails.forEach(details => { details.open = false; });
+    allSections.forEach(node => setOpen(node, false));
   });
 
   menuButton.addEventListener('click', () => setSidebar(true));
@@ -1309,6 +1370,7 @@ summary::-webkit-details-marker{display:none}
     const img = figure.querySelector('.manual-image');
     const frame = figure.querySelector('.figure-media');
     const zoom = figure.querySelector('.zoom-button');
+    if (!img || !frame || !zoom) return;
     const title = figure.querySelector('figcaption')?.childNodes[0]?.textContent?.trim() || img.alt;
 
     const markLoaded = () => {
@@ -1324,7 +1386,7 @@ summary::-webkit-details-marker{display:none}
 
     img.addEventListener('load', markLoaded);
     img.addEventListener('error', markMissing);
-    if (img.complete) (img.naturalWidth > 0 ? markLoaded : markMissing)();
+    if (img.complete && img.naturalWidth > 0) markLoaded();
 
     const openImage = () => {
       if (!img.naturalWidth) return;
@@ -1352,41 +1414,19 @@ summary::-webkit-details-marker{display:none}
   backToTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-  // 手冊內部連結：自動展開目標章節並平滑移動
-document.querySelectorAll('a.manual-link[href^="#"]').forEach(link => {
-  link.addEventListener('click', event => {
-    const id = link.getAttribute('href').substring(1);
-    const target = document.getElementById(id);
 
-    if (!target) return;
+  document.querySelectorAll('a.manual-link[href^="#"]').forEach(link => {
+    link.addEventListener('click', event => {
+      const id = link.getAttribute('href').substring(1);
+      const target = document.getElementById(id);
+      if (!target) return;
 
-    event.preventDefault();
-
-    // 展開目標本身
-    if (target.tagName === 'DETAILS') {
-      target.open = true;
-    }
-
-    // 展開所有上層 details
-    let parent = target.parentElement;
-
-    while (parent) {
-      if (parent.tagName === 'DETAILS') {
-        parent.open = true;
-      }
-
-      parent = parent.parentElement;
-    }
-
-    target.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
+      event.preventDefault();
+      openAnchor(id, true);
+      history.replaceState(null, '', `#${id}`);
     });
-
-    history.replaceState(null, '', `#${id}`);
   });
-});
 })();
-  </script>
+</script>
 </body>
 </html>
